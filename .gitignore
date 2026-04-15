@@ -177,6 +177,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+.npm_cache/
 
 # Optional eslint cache
 .eslintcache
