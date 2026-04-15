@@ -1,125 +1,99 @@
-# 03 - Construire l'agent (simple et guidé)
+# 03 - Construire l'agent
 
-Dans cette etape, on prepare un agent separe qui va dialoguer avec les clients WhatsApp.
+## Ce que vous allez faire
 
-Idee cle: l'agent ne travaille pas "a l'aveugle". On lui donne des outils pour appeler votre backend et recuperer les vraies donnees.
+Dans cette étape, vous préparez l'agent conversationnel qui interroge le backend produits et enregistre les prospects.
 
-## 1. Commencer avec le fichier de base
+## Pourquoi c'est important
 
-Ouvrez `agent/root_agent.py` et mettez ce code de depart (avec TODO):
+L'agent est la couche d'intelligence métier: il transforme une question WhatsApp en actions concrètes (recherche de produits, qualification client, capture de lead).
 
-```python
-import os
-import logging
-import requests
-from typing import Optional
-from dotenv import load_dotenv
-from google.adk.agents import LlmAgent
+## Résultat attendu en fin d'étape
 
-# --- CONFIGURATION ---
-load_dotenv()
-BACKEND_URL = os.getenv("BACKEND_URL", "https://replace-me.run.app")
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+- L'agent démarre localement avec `adk web`.
+- Les tools `search_products` et `save_customer_lead` sont opérationnels.
+- L'agent sait proposer des alternatives au lieu de bloquer la conversation.
 
-logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-logger = logging.getLogger("matos_agent")
-
-
-def search_products(query: Optional[str] = None, category: Optional[str] = None) -> str:
-    """Rechercher les produits Matos depuis le backend."""
-    # [TODO-1] Construire params avec query/category.
-    # [TODO-2] Appeler GET {BACKEND_URL}/products.
-    # [TODO-3] Retourner une liste lisible de produits.
-    # [TODO-4] Gérer le cas liste vide et erreurs reseau.
-    return "[TODO]"
-
-
-def save_customer_lead(full_name: str, email: str, phone: Optional[str] = None) -> str:
-    """Enregistrer un prospect interesse dans le backend."""
-    # [TODO-5] Construire payload {full_name, email, phone}.
-    # [TODO-6] Appeler POST {BACKEND_URL}/customers.
-    # [TODO-7] Gérer 201 (succes), 409 (deja existant), autres cas.
-    # [TODO-8] Gérer les erreurs reseau.
-    return "[TODO]"
-
-
-MATOS_INSTRUCTIONS = """
-Tu es l'assistant de vente Matos (Bukavu).
-- Reponds dans la meme langue que l'utilisateur (FR/SW/EN).
-- Pour toute question produit/prix/disponibilite, appelle search_products.
-- Si le client veut acheter, collecte nom + email (+ telephone optionnel), puis appelle save_customer_lead.
-- N'invente jamais les produits.
-"""
-
-
-root_agent = LlmAgent(
-    name="matos_orchestrator",
-    description="Assistant de vente multilingue pour Matos",
-    instruction=MATOS_INSTRUCTIONS,
-    tools=[search_products, save_customer_lead],
-)
-```
-
-## 2. Coller le code des TODO (copier-coller)
-
-Dans `agent/root_agent.py`, remplacez chaque bloc TODO par le code suivant.
-
-### TODO-1 a TODO-4 (fonction `search_products`, vers la ligne ~20)
-
-```python
-try:
-    params = {}
-    if query:
-        params["q"] = query
-    if category:
-        params["category"] = category
-
-    response = requests.get(f"{BACKEND_URL}/products", params=params, timeout=8)
-    response.raise_for_status()
-    products = response.json()
-
-    if not products:
-        return "Je ne trouve aucun produit pour cette recherche pour le moment."
-
-    return "\n".join(
-        [
-            f"- {p['name']} ({p['category']}): {p['price']} USD. Disponible: {p['available']}"
-            for p in products[:10]
-        ]
-    )
-except Exception as e:
-    logger.error(f"Search error: {e}")
-    return "Service temporairement indisponible. Merci de reessayer."
-```
-
-### TODO-5 a TODO-8 (fonction `save_customer_lead`, vers la ligne ~40)
-
-```python
-try:
-    payload = {"full_name": full_name, "email": email, "phone": phone}
-    response = requests.post(f"{BACKEND_URL}/customers", json=payload, timeout=8)
-
-    if response.status_code == 201:
-        return "Parfait, vos informations ont ete enregistrees. Le proprietaire vous contactera bientot."
-    if response.status_code == 409:
-        return "Cet email existe deja dans le systeme."
-    return f"Erreur backend: {response.text}"
-except Exception as e:
-    logger.error(f"Lead capture error: {e}")
-    return "Impossible d'enregistrer vos informations maintenant. Merci de reessayer."
-```
-
-## 3. Test local rapide
+## 1. Préparer l'environnement local de l'agent
 
 ```bash
 cd agent
-python3 -m py_compile root_agent.py
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+adk --version
+```
+
+## 2. Vérifier la structure actuelle
+
+Le projet utilise maintenant un package agent dédié:
+
+- `agent/matos/root_agent.py` -> logique principale
+- `agent/root_agent.py` -> shim d'import
+- `agent/agent.py` -> shim d'import
+
+Travaillez principalement dans `agent/matos/root_agent.py`.
+
+## 3. Comprendre les deux tools métier
+
+### Tool 1: `search_products(query, category)`
+
+Rôle:
+
+- Rechercher les produits via le backend (`GET /products`)
+- Filtrer par catégorie si besoin
+- Retourner une réponse lisible pour le client
+
+Comportement attendu:
+
+- Si résultat trouvé: liste courte des meilleurs produits
+- Si aucun résultat: fallback intelligent vers catégories disponibles
+- Si backend indisponible: message d'erreur propre (pas de crash)
+
+### Tool 2: `save_customer_lead(full_name, email, phone)`
+
+Rôle:
+
+- Enregistrer un prospect via `POST /customers`
+
+Comportement attendu:
+
+- `201`: confirmation de création
+- `409`: email déjà existant
+- erreurs réseau: message clair + logs
+
+## 4. Comprendre le prompt système
+
+Le prompt doit forcer ces règles:
+
+- répondre dans la langue de l'utilisateur (FR/SW/EN)
+- ne jamais inventer de produits
+- toujours proposer des alternatives si une recherche échoue
+- collecter nom + email avant enregistrement du lead
+
+## 5. Tester localement (mode interactif)
+
+```bash
+cd agent
+source venv/bin/activate
+export BACKEND_URL="$MATOS_BACKEND_URL"
 adk web
 ```
 
-Essayez:
+Ouvrez l'interface locale et lancez ces scénarios:
 
-- `Avez-vous des laptops disponibles ?`
-- `Nataka kununua laptop, naitwa Amina.`
+1. Recherche simple: `Bonjour, je cherche un laptop`
+2. Recherche par specs: `niko na tafuta machine ya 16go RAM`
+3. Fallback: `je veux un modèle qui n'existe pas`
+4. Intention d'achat: `Je prends ce modèle, je m'appelle Amina, email amina@example.com`
 
-Si tout est bon, passez a `04 - Deployer l'agent`.
+## 6. Checkpoint de sortie
+
+Avant de passer à l'étape 04:
+
+- l'agent démarre sans erreur
+- la recherche produit répond
+- le fallback fonctionne
+- la capture de lead répond correctement
+
+Passez à `04 - Déployer l'agent`.

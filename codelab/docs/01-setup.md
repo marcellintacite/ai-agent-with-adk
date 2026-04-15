@@ -1,44 +1,47 @@
-# 01 - Configuration (Cloud Shell en premier)
+# 01 - Configuration (Cloud Shell)
 
-Cet atelier est conçu pour Google Cloud Shell + éditeur intégré.
+## Ce que vous allez faire
 
-Objectif de cette étape: préparer un environnement propre, puis deployer service par service (pas tout en une fois).
+Dans cette étape, vous préparez un environnement propre et reproductible pour tout le workshop.
 
-## 1. Réclamer les crédits Cloud
+## Pourquoi c'est important
 
-Allez sur [Google Cloud Free Tier](https://cloud.google.com/free) et réclamez vos crédits gratuits si vous ne l'avez pas encore fait.
+Si la base n'est pas propre (projet, région, APIs, dépendances), les erreurs apparaissent plus tard pendant les déploiements et sont plus difficiles à diagnostiquer.
 
-## 2. Créer un projet GCP
+## Résultat attendu en fin d'étape
 
-1. Allez sur [Google Cloud Console](https://console.cloud.google.com/).
-2. Créez un nouveau projet ou sélectionnez un projet existant.
-3. Notez l'ID du projet (par exemple, `my-matos-project`).
+- Vous avez un projet GCP actif.
+- Cloud Shell est prêt avec les APIs nécessaires.
+- Les dépendances Python des 3 services sont installées.
+- Le sandbox Twilio est prêt pour les tests WhatsApp.
 
-## 2.1 Choisir une region (recommandation Bukavu)
+## 1. Crédits et projet GCP
 
-Bukavu n'a pas de region GCP locale. Une option souvent choisie en pratique est:
+1. Activez vos crédits sur [Google Cloud Free Tier](https://cloud.google.com/free) si nécessaire.
+2. Ouvrez [Google Cloud Console](https://console.cloud.google.com/).
+3. Créez un projet ou réutilisez un projet existant.
+4. Notez son ID (exemple: `my-matos-project`).
 
-- `africa-south1` (Johannesburg) si disponible sur les services utilises.
+## 2. Choisir la région
 
-Si un service n'est pas disponible dans cette region, utilisez temporairement `us-central1` pour le workshop.
+Pour Bukavu, utilisez en priorité:
 
-## 3. Ouvrir Cloud Shell
+- `africa-south1` (Johannesburg)
 
-1. Dans la console GCP, cliquez sur l'icône Cloud Shell en haut à droite.
-2. Attendez que le shell se charge.
+Si un service n'est pas disponible, basculez sur:
 
-## 4. Cloner le dépôt dans Cloud Shell
+- `us-central1`
+
+## 3. Ouvrir Cloud Shell et cloner le dépôt
 
 ```bash
-git clone <VOTRE_URL_REPO>
+git clone https://github.com/marcellintacite/ai-agent-with-adk
 cd build_with_ai_workshop
 ```
 
-## 5. Ouvrir l'éditeur
+Ouvrez ensuite l'éditeur Cloud Shell pour travailler visuellement sur les fichiers.
 
-Dans Cloud Shell, cliquez sur "Ouvrir l'éditeur" pour lancer l'éditeur intégré.
-
-## 6. Ajouter les variables de base dans le shell
+## 4. Initialiser le contexte GCP
 
 ```bash
 export PROJECT_ID="votre-id-projet-gcp"
@@ -49,7 +52,16 @@ gcloud auth login
 gcloud auth application-default login
 ```
 
-## 7. Activer les APIs requises
+### Vérification
+
+```bash
+gcloud config get-value project
+echo "$REGION"
+```
+
+Vous devez voir votre `PROJECT_ID` et votre région.
+
+## 5. Activer les APIs requises
 
 ```bash
 gcloud services enable \
@@ -59,38 +71,40 @@ gcloud services enable \
     aiplatform.googleapis.com
 ```
 
-## 8. Préparer le sandbox Twilio
+### Vérification
 
-1. Créez/compte sur Twilio.
-2. Ouvrez le sandbox WhatsApp.
-3. Rejoignez le sandbox depuis votre WhatsApp en utilisant le code de jonction fourni.
+```bash
+gcloud services list --enabled | grep -E "run.googleapis.com|cloudbuild.googleapis.com|artifactregistry.googleapis.com|aiplatform.googleapis.com"
+```
 
-## 9. Installer les outils d'exécution dans Cloud Shell
+## 6. Installer les dépendances des services
 
 ```bash
 python3 --version
 node --version
 npm --version
 
-pip install --user -r agents/requirements.txt
+pip install --user -r agent/requirements.txt
 pip install --user -r backend/requirements.txt
 pip install --user -r matos-backend/requirements.txt
 ```
 
-Si votre dossier s'appelle `agent/` (singulier), utilisez:
+Note: le dossier correct est `agent/` (singulier), pas `agents/`.
 
-```bash
-pip install --user -r agent/requirements.txt
-```
+## 7. Préparer le sandbox Twilio
 
-## 10. Confirmer la disposition des dossiers
+1. Connectez-vous à Twilio.
+2. Ouvrez le WhatsApp Sandbox.
+3. Rejoignez le sandbox depuis votre WhatsApp avec le code fourni par Twilio.
 
-```text
-build_with_ai_workshop/
-├── matos-backend/         # API produit et client
-├── agent/                 # Code agent (root_agent.py)
-├── backend/               # Pont WhatsApp Twilio
-└── codelab/               # Docs atelier
-```
+## 8. Checkpoint de sortie
+
+Avant de passer à l'étape 02, confirmez:
+
+- Le projet GCP est sélectionné.
+- Les APIs sont activées.
+- Les commandes `python3`, `node`, `npm` répondent.
+- Les dépendances des 3 services sont installées sans erreur bloquante.
+- Votre numéro de test a rejoint le sandbox Twilio.
 
 Passez à `02 - Déployer le backend`.

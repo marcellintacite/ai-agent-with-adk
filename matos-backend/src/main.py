@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
+import unicodedata
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +20,63 @@ from src.logger import setup_logging, logger
 DATA_DIR = Path(settings.DATABASE_URL).parent
 DB_FILE = Path(settings.DATABASE_URL)
 PRODUCTS_FILE = Path(settings.PRODUCTS_FILE)
+
+
+def normalize_search_text(value: str) -> str:
+    # Normalize accents, units, and spacing for robust free-text matching.
+    text = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+    text = text.lower()
+    text = re.sub(r"(\d+)\s*(go|gb)\b", r"\1gb", text)
+    text = re.sub(r"(\d+)\s*(to|tb)\b", r"\1tb", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def compact_search_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", value.lower())
+
+
+def flatten_specs(value: Any) -> list[str]:
+    parts: list[str] = []
+    if isinstance(value, dict):
+        for key, nested_value in value.items():
+            parts.append(str(key))
+            parts.extend(flatten_specs(nested_value))
+    elif isinstance(value, list):
+        for nested_value in value:
+            parts.extend(flatten_specs(nested_value))
+    elif value is not None:
+        parts.append(str(value))
+    return parts
+
+
+def build_search_blob(item: dict[str, Any]) -> str:
+    parts: list[str] = [
+        str(item.get("id", "")),
+        str(item.get("name", "")),
+        str(item.get("description", "")),
+        str(item.get("category", "")),
+        str(item.get("currency", "")),
+        str(item.get("price", "")),
+    ]
+    parts.extend(flatten_specs(item.get("specs", {})))
+    return " ".join(parts)
+
+
+def matches_query(item: dict[str, Any], query: str) -> bool:
+    query_norm = normalize_search_text(query)
+    query_terms = [term for term in query_norm.split(" ") if term]
+    query_compact = compact_search_text(query_norm)
+
+    blob_norm = normalize_search_text(build_search_blob(item))
+    blob_compact = compact_search_text(blob_norm)
+
+    # Any direct compact phrase match is a strong hit (e.g. "512ssd").
+    if query_compact and query_compact in blob_compact:
+        return True
+
+    # Otherwise require all terms to appear in normalized or compact text.
+    return all(term in blob_norm or term in blob_compact for term in query_terms)
 
 
 def utc_now() -> str:
@@ -142,7 +201,10 @@ def health() -> dict[str, Any]:
 def list_products(
     category: str | None = None,
     available: bool | None = None,
-    q: str | None = Query(default=None, description="Search by name or description"),
+    q: str | None = Query(
+        default=None,
+        description="Search by name, description, category, and specs (RAM/SSD/CPU/etc.)",
+    ),
 ) -> list[dict[str, Any]]:
     items = PRODUCTS
 
@@ -153,12 +215,7 @@ def list_products(
         items = [item for item in items if item["available"] is available]
 
     if q:
-        needle = q.lower()
-        items = [
-            item
-            for item in items
-            if needle in item["name"].lower() or needle in item["description"].lower()
-        ]
+        items = [item for item in items if matches_query(item, q)]
 
     return items
 

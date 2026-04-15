@@ -2,6 +2,7 @@ import os
 import httpx
 from contextlib import asynccontextmanager
 from typing import Any, Dict, Optional
+from uuid import uuid4
 
 from fastapi import FastAPI, Form, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -122,6 +123,16 @@ class LeadRequest(BaseModel):
     name: str
     contact_info: str
 
+
+class WebChatRequest(BaseModel):
+    message: str
+    user_id: str | None = None
+
+
+class WebChatResponse(BaseModel):
+    reply: str
+    user_id: str
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": settings.APP_NAME, "version": settings.VERSION}
@@ -169,3 +180,17 @@ async def notify_owner(data: LeadRequest):
     except Exception as exc:
         logger.error("Twilio notification failed", error=str(exc))
         raise HTTPException(status_code=500, detail="Notification failed")
+
+
+@app.post("/chat", response_model=WebChatResponse)
+async def web_chat(data: WebChatRequest):
+    """CORS-friendly endpoint to test the agent from a web frontend without Twilio webhooks."""
+    message = data.message.strip()
+    if not message:
+        raise HTTPException(status_code=400, detail="message is required")
+
+    user_id = (data.user_id or "").strip() or f"web-{uuid4().hex[:8]}"
+    logger.info("Received web chat message", user=user_id)
+
+    reply = await call_adk_agent(app.state.http, user_id, message)
+    return WebChatResponse(reply=reply, user_id=user_id)

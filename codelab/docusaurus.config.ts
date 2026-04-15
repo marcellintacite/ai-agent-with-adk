@@ -49,26 +49,27 @@ const config: Config = {
 
   themeConfig: {
     colorMode: {
-      defaultMode: 'dark',
-      respectPrefersColorScheme: true,
+      defaultMode: 'light',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'AI Agent Workshop',
+      title: '',
       logo: {
-        alt: 'Matos Logo',
-        src: 'img/logo.svg',
+        alt: 'Build with AI Logo',
+        src: 'img/bwai-logo-2026.png',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Codelab',
+          position: 'right',
+          label: 'Workshop Guide',
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       links: [
         {
           title: 'Resources',

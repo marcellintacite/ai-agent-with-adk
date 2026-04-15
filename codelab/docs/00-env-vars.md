@@ -21,12 +21,17 @@ export REGION="us-central1"
 # Après déploiement de matos-backend
 export MATOS_BACKEND_URL="https://..."
 
+# Avant déploiement de l'agent (pour qu'il connaisse le backend)
+export BACKEND_URL="$MATOS_BACKEND_URL"
+
 # Après déploiement de l'agent
 export MATOS_AGENT_URL="https://..."
 
 # Après déploiement du pont
 export BRIDGE_URL="https://..."
 ```
+
+**Important:** La variable `BACKEND_URL` est utilisée par l'agent pour accéder au backend. Elle doit être définie AVANT de déployer l'agent.
 
 ## 3. Variables Twilio optionnelles (Cloud Shell)
 

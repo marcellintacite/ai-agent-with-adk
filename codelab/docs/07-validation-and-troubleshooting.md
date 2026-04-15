@@ -53,3 +53,11 @@ gcloud run services logs read matos-backend --region "$REGION" --limit 50
 gcloud run services logs read matos-agent-service --region "$REGION" --limit 50
 gcloud run services logs read matos-whatsapp-bridge --region "$REGION" --limit 50
 ```
+
+## 6. Option finale: tester sans Twilio
+
+Si Twilio n'est pas encore fonctionnel dans votre contexte, terminez le workshop avec:
+
+- `08 - Frontend de test (sans Twilio)`
+
+Cette page vous permet de valider la qualite de l'agent via un chat web connecte directement au service ADK.

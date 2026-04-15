@@ -7,14 +7,14 @@ Dans cette étape, nous déployons le backend Matos en premier et sauvegardons s
 ```bash
 gcloud builds submit --tag "gcr.io/$PROJECT_ID/matos-backend:v1" ./matos-backend
 
-gcloud run deploy matos-backend \
+gcloud run deploy matos-backend-service \
   --image "gcr.io/$PROJECT_ID/matos-backend:v1" \
   --region "$REGION" \
   --platform managed \
   --allow-unauthenticated \
   --port 8080
 
-export MATOS_BACKEND_URL="$(gcloud run services describe matos-backend --region "$REGION" --format='value(status.url)')"
+export MATOS_BACKEND_URL="$(gcloud run services describe matos-backend-service --region "$REGION" --format='value(status.url)')"
 echo "$MATOS_BACKEND_URL"
 curl -fsS "$MATOS_BACKEND_URL/health"
 ```

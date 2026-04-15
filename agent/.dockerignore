@@ -1,0 +1,41 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+.env
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.Python
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ADK artifacts
+.adk/
+.adk-cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore

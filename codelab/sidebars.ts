@@ -59,6 +59,11 @@ const sidebars: SidebarsConfig = {
       id: 'validation-and-troubleshooting',
       label: 'Validation et dépannage',
     },
+    {
+      type: 'doc',
+      id: 'frontend-playground',
+      label: 'Frontend de test (sans Twilio)',
+    },
   ],
 
   // But you can create a sidebar manually
