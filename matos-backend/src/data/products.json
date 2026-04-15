@@ -1,0 +1,602 @@
+[
+  {
+    "id": "1",
+    "name": "HP EliteBook 840 G10",
+    "category": "laptops",
+    "price": 1049,
+    "currency": "USD",
+    "available": true,
+    "description": "A business laptop with strong security and all-day portability.",
+    "specs": {
+      "cpu": "Intel Core i5-1335U",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "display": "14-inch FHD"
+    }
+  },
+  {
+    "id": "2",
+    "name": "MacBook Air M3",
+    "category": "laptops",
+    "price": 1299,
+    "currency": "USD",
+    "available": true,
+    "description": "Lightweight laptop with fast performance for students and creators.",
+    "specs": {
+      "cpu": "Apple M3",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "display": "13.6-inch Liquid Retina"
+    }
+  },
+  {
+    "id": "3",
+    "name": "Lenovo ThinkPad X1 Carbon Gen 12",
+    "category": "laptops",
+    "price": 1599,
+    "currency": "USD",
+    "available": true,
+    "description": "Premium enterprise laptop with a durable chassis and excellent keyboard.",
+    "specs": {
+      "cpu": "Intel Core Ultra 7",
+      "ram": "32GB",
+      "storage": "1TB SSD",
+      "display": "14-inch 2.8K"
+    }
+  },
+  {
+    "id": "4",
+    "name": "Dell XPS 13",
+    "category": "laptops",
+    "price": 1399,
+    "currency": "USD",
+    "available": false,
+    "description": "Ultra-portable laptop built for clean design and strong everyday performance.",
+    "specs": {
+      "cpu": "Intel Core Ultra 5",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "display": "13.4-inch OLED"
+    }
+  },
+  {
+    "id": "5",
+    "name": "ASUS ROG Zephyrus G14",
+    "category": "laptops",
+    "price": 1799,
+    "currency": "USD",
+    "available": true,
+    "description": "Portable gaming laptop with high refresh visuals and powerful graphics.",
+    "specs": {
+      "cpu": "AMD Ryzen 9",
+      "ram": "32GB",
+      "storage": "1TB SSD",
+      "display": "14-inch QHD+ 120Hz"
+    }
+  },
+  {
+    "id": "6",
+    "name": "Samsung Galaxy S24 Ultra",
+    "category": "smartphones",
+    "price": 1299,
+    "currency": "USD",
+    "available": true,
+    "description": "Flagship phone with a sharp display and advanced camera system.",
+    "specs": {
+      "screen": "6.8-inch AMOLED",
+      "storage": "256GB",
+      "camera": "200MP main",
+      "battery": "5000mAh"
+    }
+  },
+  {
+    "id": "7",
+    "name": "iPhone 15 Pro",
+    "category": "smartphones",
+    "price": 1199,
+    "currency": "USD",
+    "available": true,
+    "description": "Premium smartphone with a titanium frame and strong video capture.",
+    "specs": {
+      "screen": "6.1-inch OLED",
+      "storage": "256GB",
+      "camera": "48MP main",
+      "chip": "A17 Pro"
+    }
+  },
+  {
+    "id": "8",
+    "name": "Google Pixel 8",
+    "category": "smartphones",
+    "price": 699,
+    "currency": "USD",
+    "available": true,
+    "description": "Clean Android phone with smart AI features and a dependable camera.",
+    "specs": {
+      "screen": "6.2-inch OLED",
+      "storage": "128GB",
+      "camera": "50MP main",
+      "chip": "Google Tensor G3"
+    }
+  },
+  {
+    "id": "9",
+    "name": "Apple iPad Air M2",
+    "category": "tablets",
+    "price": 799,
+    "currency": "USD",
+    "available": true,
+    "description": "Versatile tablet for note-taking, design, and light productivity.",
+    "specs": {
+      "screen": "11-inch Liquid Retina",
+      "storage": "256GB",
+      "chip": "Apple M2",
+      "connectivity": "Wi-Fi 6E"
+    }
+  },
+  {
+    "id": "10",
+    "name": "Samsung Galaxy Tab S9",
+    "category": "tablets",
+    "price": 899,
+    "currency": "USD",
+    "available": true,
+    "description": "Android tablet with a crisp display and included stylus support.",
+    "specs": {
+      "screen": "11-inch AMOLED",
+      "storage": "256GB",
+      "chip": "Snapdragon 8 Gen 2",
+      "water_resistance": "IP68"
+    }
+  },
+  {
+    "id": "11",
+    "name": "Sony WH-1000XM5",
+    "category": "audio",
+    "price": 399,
+    "currency": "USD",
+    "available": true,
+    "description": "Wireless headphones with industry-leading noise cancellation.",
+    "specs": {
+      "battery": "30 hours",
+      "connectivity": "Bluetooth 5.2",
+      "mic": "8 microphones",
+      "charging": "USB-C"
+    }
+  },
+  {
+    "id": "12",
+    "name": "Apple AirPods Pro 2",
+    "category": "audio",
+    "price": 249,
+    "currency": "USD",
+    "available": true,
+    "description": "Compact earbuds with spatial audio and active noise cancellation.",
+    "specs": {
+      "battery": "6 hours",
+      "case": "30 hours total",
+      "connectivity": "Bluetooth 5.3",
+      "chip": "Apple H2"
+    }
+  },
+  {
+    "id": "13",
+    "name": "Bose QuietComfort Ultra Headphones",
+    "category": "audio",
+    "price": 429,
+    "currency": "USD",
+    "available": true,
+    "description": "Premium over-ear headphones tuned for deep comfort and quiet listening.",
+    "specs": {
+      "battery": "24 hours",
+      "connectivity": "Bluetooth",
+      "modes": "Aware / Quiet",
+      "charging": "USB-C"
+    }
+  },
+  {
+    "id": "14",
+    "name": "JBL Flip 6",
+    "category": "audio",
+    "price": 129,
+    "currency": "USD",
+    "available": true,
+    "description": "Portable speaker with loud sound and rugged splash resistance.",
+    "specs": {
+      "battery": "12 hours",
+      "water_resistance": "IP67",
+      "connectivity": "Bluetooth 5.1",
+      "power": "30W"
+    }
+  },
+  {
+    "id": "15",
+    "name": "Sonos Era 100",
+    "category": "audio",
+    "price": 249,
+    "currency": "USD",
+    "available": false,
+    "description": "Smart speaker built for room-filling sound and flexible streaming.",
+    "specs": {
+      "connectivity": "Wi-Fi / Bluetooth",
+      "voice_assistant": "Built-in support",
+      "amps": "2 class-D",
+      "input": "USB-C line-in"
+    }
+  },
+  {
+    "id": "16",
+    "name": "LG UltraFine 27UP850",
+    "category": "monitors",
+    "price": 449,
+    "currency": "USD",
+    "available": true,
+    "description": "4K monitor with accurate color and USB-C connectivity for workstations.",
+    "specs": {
+      "screen": "27-inch",
+      "resolution": "4K UHD",
+      "refresh_rate": "60Hz",
+      "ports": "USB-C, HDMI, DisplayPort"
+    }
+  },
+  {
+    "id": "17",
+    "name": "Dell UltraSharp U2723QE",
+    "category": "monitors",
+    "price": 629,
+    "currency": "USD",
+    "available": true,
+    "description": "Color-accurate 4K monitor tuned for productivity and content review.",
+    "specs": {
+      "screen": "27-inch",
+      "resolution": "4K UHD",
+      "refresh_rate": "60Hz",
+      "panel": "IPS Black"
+    }
+  },
+  {
+    "id": "18",
+    "name": "Samsung Odyssey G7",
+    "category": "monitors",
+    "price": 699,
+    "currency": "USD",
+    "available": true,
+    "description": "Curved gaming monitor with a fast refresh rate and immersive format.",
+    "specs": {
+      "screen": "27-inch",
+      "resolution": "QHD",
+      "refresh_rate": "240Hz",
+      "curvature": "1000R"
+    }
+  },
+  {
+    "id": "19",
+    "name": "Logitech MX Master 3S",
+    "category": "accessories",
+    "price": 99,
+    "currency": "USD",
+    "available": true,
+    "description": "Ergonomic mouse with quiet clicks and precise scrolling.",
+    "specs": {
+      "sensor": "8000 DPI",
+      "buttons": "7",
+      "battery": "70 days",
+      "connectivity": "Bluetooth / USB receiver"
+    }
+  },
+  {
+    "id": "20",
+    "name": "Keychron Q1 Pro",
+    "category": "accessories",
+    "price": 199,
+    "currency": "USD",
+    "available": false,
+    "description": "Mechanical keyboard with a solid aluminum build and wireless support.",
+    "specs": {
+      "layout": "75%",
+      "switches": "Hot-swappable",
+      "connectivity": "Bluetooth / USB-C",
+      "case": "Aluminum"
+    }
+  },
+  {
+    "id": "21",
+    "name": "Anker 737 Power Bank",
+    "category": "accessories",
+    "price": 149,
+    "currency": "USD",
+    "available": true,
+    "description": "High-capacity charger that can power phones, tablets, and laptops.",
+    "specs": {
+      "capacity": "24000mAh",
+      "output": "140W",
+      "ports": "2x USB-C, 1x USB-A",
+      "display": "Smart screen"
+    }
+  },
+  {
+    "id": "22",
+    "name": "Belkin 3-in-1 Wireless Charger",
+    "category": "accessories",
+    "price": 119,
+    "currency": "USD",
+    "available": true,
+    "description": "Charging dock for phone, earbuds, and smartwatch in one place.",
+    "specs": {
+      "devices": "3",
+      "output": "15W",
+      "connectivity": "Wireless",
+      "finish": "Matte"
+    }
+  },
+  {
+    "id": "23",
+    "name": "Samsung T7 Shield 1TB",
+    "category": "storage",
+    "price": 119,
+    "currency": "USD",
+    "available": true,
+    "description": "Rugged portable SSD built for fast transfers and travel.",
+    "specs": {
+      "capacity": "1TB",
+      "read_speed": "1050MB/s",
+      "write_speed": "1000MB/s",
+      "protection": "IP65"
+    }
+  },
+  {
+    "id": "24",
+    "name": "SanDisk Extreme Pro 128GB",
+    "category": "storage",
+    "price": 45,
+    "currency": "USD",
+    "available": true,
+    "description": "Fast SD card for cameras, drones, and video recording.",
+    "specs": {
+      "capacity": "128GB",
+      "read_speed": "200MB/s",
+      "write_speed": "90MB/s",
+      "class": "V30"
+    }
+  },
+  {
+    "id": "25",
+    "name": "WD Black SN850X 2TB",
+    "category": "storage",
+    "price": 169,
+    "currency": "USD",
+    "available": true,
+    "description": "High-performance NVMe SSD for gaming and heavy workloads.",
+    "specs": {
+      "capacity": "2TB",
+      "read_speed": "7300MB/s",
+      "interface": "PCIe 4.0",
+      "form_factor": "M.2 2280"
+    }
+  },
+  {
+    "id": "26",
+    "name": "TP-Link Archer AX55",
+    "category": "networking",
+    "price": 99,
+    "currency": "USD",
+    "available": true,
+    "description": "Wi-Fi 6 router for stable home internet and streaming.",
+    "specs": {
+      "standard": "Wi-Fi 6",
+      "speed": "AX3000",
+      "ports": "4 Gigabit LAN",
+      "coverage": "Medium homes"
+    }
+  },
+  {
+    "id": "27",
+    "name": "Ubiquiti UniFi Dream Router",
+    "category": "networking",
+    "price": 279,
+    "currency": "USD",
+    "available": true,
+    "description": "All-in-one router for small offices and advanced home networks.",
+    "specs": {
+      "standard": "Wi-Fi 6",
+      "throughput": "Dual-band",
+      "ports": "Gigabit Ethernet",
+      "management": "UniFi console"
+    }
+  },
+  {
+    "id": "28",
+    "name": "Netgear Nighthawk Mesh System",
+    "category": "networking",
+    "price": 349,
+    "currency": "USD",
+    "available": false,
+    "description": "Mesh Wi-Fi kit that helps eliminate dead zones in larger spaces.",
+    "specs": {
+      "standard": "Wi-Fi 6",
+      "nodes": "2-pack",
+      "coverage": "Up to 4,500 sq ft",
+      "app": "Netgear mobile app"
+    }
+  },
+  {
+    "id": "29",
+    "name": "Apple Watch Series 9",
+    "category": "wearables",
+    "price": 399,
+    "currency": "USD",
+    "available": true,
+    "description": "Smartwatch with fitness tracking, notifications, and health sensors.",
+    "specs": {
+      "screen": "1.9-inch OLED",
+      "battery": "18 hours",
+      "water_resistance": "50m",
+      "chip": "S9"
+    }
+  },
+  {
+    "id": "30",
+    "name": "Garmin Forerunner 265",
+    "category": "wearables",
+    "price": 449,
+    "currency": "USD",
+    "available": true,
+    "description": "Fitness watch with advanced running metrics and reliable GPS.",
+    "specs": {
+      "screen": "AMOLED",
+      "battery": "Up to 13 days",
+      "gps": "Multi-band",
+      "water_resistance": "5 ATM"
+    }
+  },
+  {
+    "id": "31",
+    "name": "Fitbit Charge 6",
+    "category": "wearables",
+    "price": 159,
+    "currency": "USD",
+    "available": true,
+    "description": "Slim fitness tracker with heart rate tracking and sleep insights.",
+    "specs": {
+      "battery": "7 days",
+      "sensor": "Heart rate",
+      "connectivity": "Bluetooth / GPS",
+      "strap": "Silicone"
+    }
+  },
+  {
+    "id": "32",
+    "name": "Canon EOS R50",
+    "category": "cameras",
+    "price": 679,
+    "currency": "USD",
+    "available": true,
+    "description": "Compact mirrorless camera for content creation and travel.",
+    "specs": {
+      "sensor": "24.2MP APS-C",
+      "video": "4K",
+      "lens_mount": "RF",
+      "focus": "Dual Pixel CMOS AF II"
+    }
+  },
+  {
+    "id": "33",
+    "name": "Sony ZV-E10",
+    "category": "cameras",
+    "price": 799,
+    "currency": "USD",
+    "available": true,
+    "description": "Creator-focused camera with flip screen and strong autofocus.",
+    "specs": {
+      "sensor": "24.2MP APS-C",
+      "video": "4K",
+      "lens_mount": "E-mount",
+      "screen": "Vari-angle LCD"
+    }
+  },
+  {
+    "id": "34",
+    "name": "DJI Mini 4 Pro",
+    "category": "drones",
+    "price": 759,
+    "currency": "USD",
+    "available": true,
+    "description": "Compact drone with stabilized video and strong obstacle sensing.",
+    "specs": {
+      "camera": "4K/60fps",
+      "flight_time": "34 minutes",
+      "weight": "Under 250g",
+      "range": "Long range"
+    }
+  },
+  {
+    "id": "35",
+    "name": "Razer Blade 16",
+    "category": "laptops",
+    "price": 2899,
+    "currency": "USD",
+    "available": true,
+    "description": "Premium gaming laptop with a high-end display and strong graphics.",
+    "specs": {
+      "cpu": "Intel Core i9",
+      "ram": "32GB",
+      "storage": "1TB SSD",
+      "display": "16-inch QHD+ 240Hz"
+    }
+  },
+  {
+    "id": "36",
+    "name": "Microsoft Surface Laptop 6",
+    "category": "laptops",
+    "price": 1499,
+    "currency": "USD",
+    "available": true,
+    "description": "Clean Windows laptop designed for productivity and mobility.",
+    "specs": {
+      "cpu": "Intel Core Ultra 7",
+      "ram": "16GB",
+      "storage": "512GB SSD",
+      "display": "13.5-inch PixelSense"
+    }
+  },
+  {
+    "id": "37",
+    "name": "OnePlus 12",
+    "category": "smartphones",
+    "price": 799,
+    "currency": "USD",
+    "available": true,
+    "description": "Fast Android phone with a bright display and speedy charging.",
+    "specs": {
+      "screen": "6.82-inch AMOLED",
+      "storage": "256GB",
+      "battery": "5400mAh",
+      "charging": "100W"
+    }
+  },
+  {
+    "id": "38",
+    "name": "Xiaomi Pad 6",
+    "category": "tablets",
+    "price": 399,
+    "currency": "USD",
+    "available": true,
+    "description": "Affordable tablet for media, notes, and light productivity.",
+    "specs": {
+      "screen": "11-inch LCD",
+      "storage": "128GB",
+      "chip": "Snapdragon 870",
+      "battery": "8840mAh"
+    }
+  },
+  {
+    "id": "39",
+    "name": "HyperX Cloud III Wireless",
+    "category": "audio",
+    "price": 169,
+    "currency": "USD",
+    "available": true,
+    "description": "Wireless gaming headset with strong battery life and comfort.",
+    "specs": {
+      "battery": "120 hours",
+      "connectivity": "2.4GHz wireless",
+      "mic": "Detachable",
+      "drivers": "53mm"
+    }
+  },
+  {
+    "id": "40",
+    "name": "Elgato Stream Deck MK.2",
+    "category": "accessories",
+    "price": 149,
+    "currency": "USD",
+    "available": true,
+    "description": "Control pad for streamers, creators, and power users.",
+    "specs": {
+      "keys": "15 customizable",
+      "connectivity": "USB-C",
+      "software": "Stream Deck app",
+      "mount": "Adjustable stand"
+    }
+  }
+]
