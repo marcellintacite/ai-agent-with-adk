@@ -7,7 +7,8 @@ from google.adk.agents import LlmAgent
 
 # --- CONFIGURATION ---
 load_dotenv()
-BACKEND_URL = os.getenv("BACKEND_URL", "https://matos-backend-d3hu3ltnha-bq.a.run.app")
+# TODO: remplacez cette URL par celle de votre backend si besoin, ou définissez BACKEND_URL dans .env / Cloud Run.
+BACKEND_URL = os.getenv("BACKEND_URL", "")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

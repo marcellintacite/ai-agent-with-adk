@@ -4,8 +4,8 @@ Dans cette étape, vous déployez le service bridge sur Cloud Run.
 
 Important: il y a 2 parcours possibles:
 
-- Parcours A: vous avez un compte Twilio (intégration WhatsApp complète)
-- Parcours B: vous n'avez pas de compte Twilio (vous continuez quand même)
+- Parcours A: vous n'avez pas de compte Twilio (vous continuez quand même)
+- Parcours B: vous avez un compte Twilio (intégration WhatsApp complète)
 
 ## 1. Construire l'image du bridge
 
@@ -19,7 +19,23 @@ cd backend
 gcloud builds submit --tag "gcr.io/$PROJECT_ID/matos-whatsapp-bridge:v1" .
 ```
 
-## 2A. Déployer le bridge (avec compte Twilio)
+## 2A. Déployer le bridge (sans compte Twilio)
+
+Si vous n'avez pas de compte Twilio, utilisez cette commande (sans `--set-secrets`):
+
+```bash
+gcloud run deploy matos-whatsapp-bridge \
+  --image "gcr.io/$PROJECT_ID/matos-whatsapp-bridge:v1" \
+  --region "$REGION" \
+  --platform managed \
+  --allow-unauthenticated \
+  --port 8080 \
+  --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos"
+```
+
+Ce mode vous permet de continuer l'atelier et de tester via le frontend (`/chat`) même sans WhatsApp.
+
+## 2B. Déployer le bridge (avec compte Twilio)
 
 Utilisez cette commande si vous avez déjà les secrets `twilio_account_sid` et `twilio_auth_token` dans Secret Manager:
 
@@ -30,7 +46,7 @@ gcloud run deploy matos-whatsapp-bridge \
   --platform managed \
   --allow-unauthenticated \
   --port 8080 \
-  --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos_agent,TWILIO_FROM_NUMBER=whatsapp:+14155238886,OWNER_PHONE=whatsapp:+243999537410" \
+  --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos,TWILIO_FROM_NUMBER=whatsapp:+14155238886,OWNER_PHONE=whatsapp:+243999537410" \
   --set-secrets "TWILIO_ACCOUNT_SID=twilio_account_sid:latest,TWILIO_AUTH_TOKEN=twilio_auth_token:latest"
 ```
 
@@ -47,7 +63,7 @@ echo "$TWILIO_AUTH_TOKEN" | gcloud secrets create twilio_auth_token --data-file=
 ```
 
 ```bash
-gcloud run deploy matos-whatsapp-bridge --image "gcr.io/$PROJECT_ID/matos-whatsapp-bridge:v1" --region "$REGION" --platform managed --allow-unauthenticated --port 8080 --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos_agent,TWILIO_FROM_NUMBER=whatsapp:+14155238886,OWNER_PHONE=whatsapp:+243999537410" --set-secrets "TWILIO_ACCOUNT_SID=twilio_account_sid:latest,TWILIO_AUTH_TOKEN=twilio_auth_token:latest"
+gcloud run deploy matos-whatsapp-bridge --image "gcr.io/$PROJECT_ID/matos-whatsapp-bridge:v1" --region "$REGION" --platform managed --allow-unauthenticated --port 8080 --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos,TWILIO_FROM_NUMBER=whatsapp:+14155238886,OWNER_PHONE=whatsapp:+243999537410" --set-secrets "TWILIO_ACCOUNT_SID=twilio_account_sid:latest,TWILIO_AUTH_TOKEN=twilio_auth_token:latest"
 ```
 
 ```bash
@@ -108,22 +124,6 @@ Vérifiez que les 2 secrets existent:
 gcloud secrets list | grep -E "twilio_account_sid|twilio_auth_token"
 ```
 
-## 2B. Déployer le bridge (sans compte Twilio)
-
-Si vous n'avez pas de compte Twilio, utilisez cette commande (sans `--set-secrets`):
-
-```bash
-gcloud run deploy matos-whatsapp-bridge \
-  --image "gcr.io/$PROJECT_ID/matos-whatsapp-bridge:v1" \
-  --region "$REGION" \
-  --platform managed \
-  --allow-unauthenticated \
-  --port 8080 \
-  --set-env-vars "ADK_SERVICE_URL=$MATOS_AGENT_URL,ADK_APP_NAME=matos_agent"
-```
-
-Ce mode vous permet de continuer l'atelier et de tester via le frontend (`/chat`) même sans WhatsApp.
-
 ## 3. Récupérer l'URL du bridge et tester la santé
 
 Exécutez:
@@ -140,7 +140,7 @@ echo "$BRIDGE_URL"
 curl -fsS "$BRIDGE_URL/health"
 ```
 
-## 4. Configuration Twilio (uniquement parcours A)
+## 4. Configuration Twilio (uniquement parcours B)
 
 Si vous avez Twilio, dans Twilio Sandbox, définissez `WHEN A MESSAGE COMES IN` à:
 
@@ -181,7 +181,7 @@ Vous pouvez passer à l'étape 07 si:
 - `BRIDGE_URL` est non vide,
 - `/health` répond,
 - et selon votre parcours:
-  - avec Twilio: webhook sandbox configuré,
-  - sans Twilio: `/chat` répond correctement.
+  - parcours A (sans Twilio): `/chat` répond correctement,
+  - parcours B (avec Twilio): webhook sandbox configuré.
 
 Passez à `07 - Validation et dépannage`.

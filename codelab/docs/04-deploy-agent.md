@@ -69,10 +69,17 @@ Explication simple de cette commande:
 
 ## 3. Récupérer l'URL du service déployé
 
-Exécutez:
+Quand le déploiement est terminé, copiez l'URL de votre service Cloud Run ici.
 
 ```bash
-export MATOS_AGENT_URL="$(gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url)')"
+# TODO: collez ici l'URL Cloud Run de votre agent après le déploiement
+export MATOS_AGENT_URL=""
+```
+
+Si vous préférez récupérer l'URL dans le terminal, vous pouvez aussi l'afficher avec:
+
+```bash
+gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url)'
 ```
 
 Puis:
@@ -80,6 +87,8 @@ Puis:
 ```bash
 echo "$MATOS_AGENT_URL"
 ```
+
+Remplacez la valeur vide par votre URL avant de passer à l'étape suivante.
 
 ## 4. Vérifier que l'agent est bien en ligne
 

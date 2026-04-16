@@ -1,203 +1,76 @@
-# 01 - Configuration (Cloud Shell)
+# 01 - Setup (Quick Start)
 
-## Objectif de cette page
+## Goal
+Get your project ready in 5 minutes: shell → editor → setup → done.
 
-À la fin de cette étape, vous devez avoir:
+## 1. Open Google Cloud Console
 
-- un projet Google Cloud sélectionné,
-- le dépôt du workshop cloné,
-- le dossier du projet ouvert dans l'éditeur Cloud Shell.
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Check which project is active at the top
+3. If needed, create a new project and note its ID (e.g., `my-project-12345`)
 
-Cette étape est la base de tout le workshop. Si elle est propre, le reste devient simple.
+## 2. Open Cloud Shell
 
-## Ce que vous allez préparer
+Click the Cloud Shell icon (>_) in the top toolbar and wait for it to be ready.
 
-- Le contexte GCP (`PROJECT_ID`, `REGION`)
-- Les APIs nécessaires au déploiement
-- Les dépendances des services
-- L'espace de travail visible dans l'éditeur
-
-## 1. Ouvrir Google Cloud et vérifier votre projet
-
-1. Ouvrez [Google Cloud Console](https://console.cloud.google.com/).
-2. En haut de la page, vérifiez le projet actif.
-3. Si nécessaire, créez un projet et notez son ID (exemple: `ladycraft1-4ee09`).
-
-## 2. Ouvrir Cloud Shell
-
-1. Cliquez sur l'icône Cloud Shell (terminal) dans la barre supérieure.
-2. Attendez que le terminal soit prêt.
-3. Vérifiez que `gcloud` répond:
-
-```bash
-gcloud --version
-```
-
-Résultat attendu: la version de `gcloud` s'affiche.
-
-## 3. Initialiser les variables de base (ligne par ligne)
-
-Exécutez:
-
-```bash
-export PROJECT_ID="votre-id-projet-gcp"
-```
-
-Testez:
-
-```bash
-echo "$PROJECT_ID"
-```
-
-Exécutez:
-
-```bash
-export REGION="europe-west1"
-```
-
-Testez:
-
-```bash
-echo "$REGION"
-```
-
-## 4. Lier Cloud Shell à votre projet GCP
-
-Exécutez:
-
-```bash
-gcloud config set project "$PROJECT_ID"
-```
-
-Testez:
-
-```bash
-gcloud config get-value project
-```
-
-Le résultat doit être exactement votre `PROJECT_ID`.
-
-## 5. Authentification (si demandée)
-
-Exécutez uniquement si Cloud Shell vous le demande:
-
-```bash
-gcloud auth login
-```
-
-```bash
-gcloud auth application-default login
-```
-
-## 6. Cloner le dépôt du workshop
-
-Exécutez:
+## 3. Clone the workshop repository
 
 ```bash
 git clone https://github.com/marcellintacite/ai-agent-with-adk
-```
-
-Entrez dans le dossier:
-
-```bash
 cd build_with_ai_workshop
 ```
 
-Testez que vous êtes au bon endroit:
+## 4. Open the Editor
+
+From Cloud Shell, run:
 
 ```bash
-pwd
+cloudshell editor
 ```
 
-Le chemin doit se terminer par `build_with_ai_workshop`.
+Or click **Open Editor** button. Navigate to open the `build_with_ai_workshop` folder.
 
-## 7. Ouvrir le projet dans l'éditeur Cloud Shell (objectif principal)
+You should see: `agent/`, `backend/`, `matos-backend/`, `codelab/`, `frontend/`
 
-Depuis le terminal Cloud Shell, exécutez:
+## 5. Open Terminal in the Editor
+
+Click **Terminal** → **New Terminal** in the editor menu (or Ctrl+`)
+
+## 6. Set your Project & Region
 
 ```bash
-cloudshell workspace .
+export PROJECT_ID="your-gcp-project-id"
+export REGION="europe-west1"
 ```
 
-Si la commande n'est pas disponible, ouvrez l'éditeur manuellement:
+Verify:
+```bash
+gcloud config set project "$PROJECT_ID"
+gcloud config get-value project
+```
 
-1. Cliquez sur **Open Editor** dans Cloud Shell.
-2. Dans l'explorateur de fichiers, ouvrez le dossier `build_with_ai_workshop`.
-
-Vérification visuelle attendue:
-
-- vous voyez les dossiers `agent/`, `backend/`, `matos-backend/`, `codelab/`, `frontend/`.
-- vous pouvez ouvrir `codelab/docs/intro.md` dans l'éditeur.
-
-## 8. Activer les APIs requises
-
-Exécutez:
+## 7. Enable All Required APIs (One Command)
 
 ```bash
-gcloud services enable run.googleapis.com
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com aiplatform.googleapis.com secretmanager.googleapis.com
 ```
+
+Verify with:
+```bash
+gcloud services list --enabled | grep googleapis
+```
+
+## 8. Install Python Dependencies
 
 ```bash
-gcloud services enable cloudbuild.googleapis.com
+pip install --user -r agent/requirements.txt -r backend/requirements.txt -r matos-backend/requirements.txt
 ```
 
-```bash
-gcloud services enable artifactregistry.googleapis.com
-```
+## Done ✓
 
-```bash
-gcloud services enable aiplatform.googleapis.com
-```
+You're ready. The variables `$PROJECT_ID` and `$REGION` are now set in your terminal session. 
 
-```bash
-gcloud services enable secretmanager.googleapis.com
-```
-
-Testez:
-
-```bash
-gcloud services list --enabled | grep -E "run.googleapis.com|cloudbuild.googleapis.com|artifactregistry.googleapis.com|aiplatform.googleapis.com|secretmanager.googleapis.com"
-```
-
-## 9. Vérifier les outils locaux
-
-Exécutez:
-
-```bash
-python3 --version
-```
-
-```bash
-node --version
-```
-
-```bash
-npm --version
-```
-
-## 10. Installer les dépendances Python (ligne par ligne)
-
-Exécutez:
-
-```bash
-pip install --user -r agent/requirements.txt
-```
-
-```bash
-pip install --user -r backend/requirements.txt
-```
-
-```bash
-pip install --user -r matos-backend/requirements.txt
-```
-
-Note: le dossier correct est `agent/` (singulier), pas `agents/`.
-
-## 11. Checkpoint final
-
-Avant de passer à l'étape 02, confirmez:
-
-- `PROJECT_ID` et `REGION` sont définis.
+Next: [Deploy Backend](02-deploy-backend.md)
 - le projet GCP actif est correct.
 - le dossier `build_with_ai_workshop` est ouvert dans l'éditeur Cloud Shell.
 - les APIs sont activées.

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     # ADK Agent Config
     # Format: https://SERVICE_NAME-PROJECT_ID.REGION.run.app
     ADK_SERVICE_URL: str = "https://matos-agent-service-742494222209.us-central1.run.app"
-    ADK_APP_NAME: str = "matos_agent"
+    ADK_APP_NAME: str = "matos"
     
     # Twilio Config
     TWILIO_ACCOUNT_SID: str | None = None
