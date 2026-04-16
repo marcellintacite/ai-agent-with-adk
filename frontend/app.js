@@ -36,7 +36,38 @@ function appendMessage(type, text) {
   node.className = `msg ${type}`;
   node.textContent = text;
   els.messages.appendChild(node);
-  els.messages.scrollTop = els.messages.scrollHeight;
+  scrollMessagesToBottom();
+}
+
+function showTypingIndicator() {
+  let node = document.getElementById("typingIndicator");
+  if (node) return;
+
+  node = document.createElement("div");
+  node.id = "typingIndicator";
+  node.className = "msg bot typing";
+  node.setAttribute("aria-live", "polite");
+  node.setAttribute("aria-label", "Agent is typing");
+  node.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+
+  els.messages.appendChild(node);
+  scrollMessagesToBottom();
+}
+
+function hideTypingIndicator() {
+  const node = document.getElementById("typingIndicator");
+  if (node) {
+    node.remove();
+  }
+}
+
+function scrollMessagesToBottom(behavior = "smooth") {
+  requestAnimationFrame(() => {
+    els.messages.scrollTo({
+      top: els.messages.scrollHeight,
+      behavior,
+    });
+  });
 }
 
 async function callAgent(message) {
@@ -144,13 +175,16 @@ async function onSend(evt) {
   els.messageInput.value = "";
   els.sendBtn.disabled = true;
   setStatus("idle", "L'agent reflechit...");
+  showTypingIndicator();
 
   try {
     const reply = await callAgent(text);
+    hideTypingIndicator();
     appendMessage("bot", reply);
     syncInputs();
     setStatus("ok", "Reponse recue.");
   } catch (err) {
+    hideTypingIndicator();
     const msg = String(err.message || err);
     appendMessage("system", `Erreur: ${msg}`);
     if (msg.includes("Failed to fetch") || msg.includes("CORS")) {
@@ -186,6 +220,7 @@ function init() {
   syncInputs();
 
   appendMessage("system", "Bienvenue. Configurez BRIDGE_URL puis testez la connexion.");
+  scrollMessagesToBottom("auto");
 
   els.saveBtn.addEventListener("click", onSave);
   els.pingBtn.addEventListener("click", () => {
