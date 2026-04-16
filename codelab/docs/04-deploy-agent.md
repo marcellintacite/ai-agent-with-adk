@@ -1,105 +1,112 @@
 # 04 - Déployer l'agent
 
-## Ce que vous allez faire
+## Objectif de cette page
 
-Déployer l'agent ADK sur Cloud Run et récupérer son URL officielle pour les étapes suivantes.
+Dans cette étape, vous faites une seule chose: déployer l'agent sur Cloud Run.
 
-## Pourquoi c'est important
+À la fin, vous aurez:
 
-Le pont WhatsApp (étapes 05-06) dépend de l'URL de cet agent. Si ce déploiement est mal configuré, la chaîne complète échoue.
+- un service Cloud Run `matos-agent-service` en ligne,
+- une URL d'agent sauvegardée dans `MATOS_AGENT_URL`,
+- une interface de test accessible.
 
-## Résultat attendu en fin d'étape
+## 1. Préparer le contexte de déploiement
 
-- Service Cloud Run `matos-agent-service` déployé
-- variable `MATOS_AGENT_URL` définie
-- interface ADK accessible
+Avant de lancer le déploiement, vérifiez uniquement ces points:
 
-## 1. Préparer le contexte
+- `PROJECT_ID` est défini,
+- `REGION` est défini (atelier: `europe-west1`),
+- `MATOS_BACKEND_URL` est défini,
+- vous êtes dans le dossier `agent/`,
+- l'environnement virtuel est activé.
+
+Exécutez:
 
 ```bash
 cd agent
+```
+
+```bash
 source venv/bin/activate
+```
+
+```bash
 export BACKEND_URL="$MATOS_BACKEND_URL"
+```
+
+Vérifiez:
+
+```bash
+echo "PROJECT_ID=$PROJECT_ID"
+```
+
+```bash
+echo "REGION=$REGION"
+```
+
+```bash
 echo "BACKEND_URL=$BACKEND_URL"
 ```
 
-Vérifiez aussi la présence de `.dockerignore` pour éviter l'upload du venv:
+Si une valeur est vide, corrigez-la avant de continuer.
+
+## 2. Déployer l'agent sur Cloud Run
+
+Exécutez la commande de déploiement:
 
 ```bash
-ls -la .dockerignore
+adk deploy cloud_run --project "$PROJECT_ID" --region "$REGION" --service_name matos-agent-service --with_ui .
 ```
 
-## 2. Déployer le service agent
+Explication simple de cette commande:
 
-```bash
-adk deploy cloud_run \
-  --project "$PROJECT_ID" \
-  --region "$REGION" \
-  --service_name matos-agent-service \
-  --with_ui
-```
+- `adk deploy cloud_run`: demande à ADK de construire et déployer l'agent,
+- `--project`: indique dans quel projet GCP déployer,
+- `--region`: indique la région du service,
+- `--service_name matos-agent-service`: fixe le nom du service,
+- `--with_ui`: active l'interface web de test,
+- `.`: utilise le dossier courant (`agent/`) comme source.
 
-Important:
+## 3. Récupérer l'URL du service déployé
 
-- gardez le nom `matos-agent-service`
-- ne laissez pas le nom par défaut si vous voulez un workshop cohérent
-
-## 3. Récupérer l'URL et sauvegarder la variable
+Exécutez:
 
 ```bash
 export MATOS_AGENT_URL="$(gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url)')"
+```
+
+Puis:
+
+```bash
 echo "$MATOS_AGENT_URL"
 ```
 
-Optionnel (persistance shell):
+## 4. Vérifier que l'agent est bien en ligne
 
-```bash
-echo "export MATOS_AGENT_URL=\"$MATOS_AGENT_URL\"" >> ~/.bashrc
-source ~/.bashrc
-```
-
-## 4. Vérifier que le service est bien en ligne
+Exécutez:
 
 ```bash
 gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url,status.traffic[0].percent)'
+```
+
+Puis testez l'interface:
+
+```bash
 curl -I "$MATOS_AGENT_URL/dev-ui/"
 ```
 
 Résultat attendu:
 
-- le service existe
-- `/dev-ui/` répond (200 ou redirection)
+- le service existe,
+- le trafic est bien routé,
+- `/dev-ui/` répond (200 ou redirection).
 
-## 5. Checkpoint fonctionnel
+## 5. Checkpoint de sortie
 
-Utilisez ensuite l'étape 07 pour valider le comportement end-to-end via le bridge WhatsApp.
+Vous pouvez passer à l'étape suivante si:
 
-## Troubleshooting rapide
-
-### 1) `adk: command not found`
-
-```bash
-cd agent
-source venv/bin/activate
-pip install google-adk
-adk --version
-```
-
-### 2) Service introuvable
-
-```bash
-gcloud run services list --project "$PROJECT_ID" --region "$REGION"
-```
-
-Si le nom n'est pas `matos-agent-service`, redéployez avec `--service_name matos-agent-service`.
-
-### 3) L'agent ne trouve pas les produits
-
-```bash
-echo "$BACKEND_URL"
-curl -fsS "$MATOS_BACKEND_URL/health"
-```
-
-Si nécessaire, réexportez `BACKEND_URL` puis redéployez.
+- `MATOS_AGENT_URL` est non vide,
+- `curl -I "$MATOS_AGENT_URL/dev-ui/"` répond,
+- le nom du service est bien `matos-agent-service`.
 
 Passez à `05 - Construire le pont WhatsApp`.

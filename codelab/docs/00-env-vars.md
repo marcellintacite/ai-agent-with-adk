@@ -2,54 +2,98 @@
 
 Utilisez cette page comme source unique de vérité pour les variables de l'atelier.
 
-## 1. Variables de base requises
+## Pourquoi on utilise ces variables
+
+Dans l'atelier, plusieurs commandes ont besoin des mêmes valeurs (ID projet et région).
+
+Au lieu de réécrire ces valeurs à chaque commande, on les stocke dans des variables:
+
+- `PROJECT_ID` évite les erreurs de frappe sur l'identifiant du projet
+- `REGION` garantit que tous les services sont déployés dans la même région
+
+Résultat: commandes plus courtes, plus lisibles, et moins d'erreurs.
+
+Pour cette session, nous définissons uniquement 2 variables:
+
+- `PROJECT_ID`
+- `REGION`
+
+La région choisie pour l'atelier est: `europe-west1`.
+
+## 1. Définir `PROJECT_ID` (ligne par ligne)
+
+Exécutez cette commande:
 
 ```bash
 export PROJECT_ID="votre-id-projet-gcp"
-export REGION="africa-south1"
 ```
 
-Si un service n'est pas disponible dans cette region, basculez vers:
-
-```bash
-export REGION="us-central1"
-```
-
-## 2. Variables d'URL de service (Définir après déploiement)
-
-```bash
-# Après déploiement de matos-backend
-export MATOS_BACKEND_URL="https://..."
-
-# Avant déploiement de l'agent (pour qu'il connaisse le backend)
-export BACKEND_URL="$MATOS_BACKEND_URL"
-
-# Après déploiement de l'agent
-export MATOS_AGENT_URL="https://..."
-
-# Après déploiement du pont
-export BRIDGE_URL="https://..."
-```
-
-**Important:** La variable `BACKEND_URL` est utilisée par l'agent pour accéder au backend. Elle doit être définie AVANT de déployer l'agent.
-
-## 3. Variables Twilio optionnelles (Cloud Shell)
-
-Utilisez des secrets en production. Pour les démos d'atelier, vous pouvez exporter temporairement :
-
-```bash
-export TWILIO_ACCOUNT_SID="ACxxxxxxxx"
-export TWILIO_AUTH_TOKEN="xxxxxxxx"
-```
-
-## 4. Vérification rapide
+Testez immédiatement:
 
 ```bash
 echo "$PROJECT_ID"
-echo "$REGION"
-echo "$MATOS_BACKEND_URL"
-echo "$MATOS_AGENT_URL"
-echo "$BRIDGE_URL"
 ```
 
-Si une variable s'affiche vide, redéfinissez-la avant de passer à l'étape suivante.
+Résultat attendu: votre ID projet s'affiche (exemple: `ladycraft1-4ee09`).
+
+## 2. Définir `REGION` (ligne par ligne)
+
+Exécutez cette commande:
+
+```bash
+export REGION="europe-west1"
+```
+
+Testez immédiatement:
+
+```bash
+echo "$REGION"
+```
+
+Résultat attendu: `europe-west1`.
+
+## 3. Vérifier les 2 variables ensemble
+
+Exécutez:
+
+```bash
+echo "PROJECT_ID=$PROJECT_ID"
+```
+
+```bash
+echo "REGION=$REGION"
+```
+
+Si les deux lignes s'affichent correctement, vous pouvez passer à l'étape suivante.
+
+## 4. Rappel important
+
+- N'utilisez pas `africa-south1` pour cet atelier.
+- Nous utilisons `europe-west1`.
+- Les autres variables (URLs de services, etc.) seront définies plus tard, étape par étape.
+
+## 5. Important: ces variables sont temporaires
+
+Ces variables existent seulement dans la session terminal en cours.
+
+Si vous fermez Cloud Shell, rechargez la page, ou ouvrez une nouvelle session, elles peuvent disparaître.
+
+Si une commande échoue avec une variable vide, redéfinissez simplement:
+
+```bash
+export PROJECT_ID="votre-id-projet-gcp"
+```
+
+```bash
+export REGION="europe-west1"
+```
+
+Test rapide:
+
+```bash
+echo "$PROJECT_ID"
+```
+
+```bash
+echo "$REGION"
+```

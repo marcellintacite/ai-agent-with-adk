@@ -10,7 +10,7 @@ L'agent est la couche d'intelligence métier: il transforme une question WhatsAp
 
 ## Résultat attendu en fin d'étape
 
-- L'agent démarre localement avec `adk web`.
+- L'agent démarre localement avec `adk run` (CLI).
 - Les tools `search_products` et `save_customer_lead` sont opérationnels.
 - L'agent sait proposer des alternatives au lieu de bloquer la conversation.
 
@@ -18,9 +18,21 @@ L'agent est la couche d'intelligence métier: il transforme une question WhatsAp
 
 ```bash
 cd agent
+```
+
+```bash
 python3 -m venv venv
+```
+
+```bash
 source venv/bin/activate
+```
+
+```bash
 pip install -r requirements.txt
+```
+
+```bash
 adk --version
 ```
 
@@ -29,8 +41,7 @@ adk --version
 Le projet utilise maintenant un package agent dédié:
 
 - `agent/matos/root_agent.py` -> logique principale
-- `agent/root_agent.py` -> shim d'import
-- `agent/agent.py` -> shim d'import
+- `agent/matos/__init__.py` -> export du `root_agent`
 
 Travaillez principalement dans `agent/matos/root_agent.py`.
 
@@ -73,19 +84,36 @@ Le prompt doit forcer ces règles:
 
 ## 5. Tester localement (mode interactif)
 
+Ici, nous utilisons le CLI ADK (pas `adk web`).
+
 ```bash
 cd agent
-source venv/bin/activate
-export BACKEND_URL="$MATOS_BACKEND_URL"
-adk web
 ```
 
-Ouvrez l'interface locale et lancez ces scénarios:
+```bash
+source venv/bin/activate
+```
+
+```bash
+export BACKEND_URL="$MATOS_BACKEND_URL"
+```
+
+```bash
+cd matos
+```
+
+```bash
+adk run .
+```
+
+Le terminal passe en mode conversation. Testez ces scénarios:
 
 1. Recherche simple: `Bonjour, je cherche un laptop`
 2. Recherche par specs: `niko na tafuta machine ya 16go RAM`
 3. Fallback: `je veux un modèle qui n'existe pas`
 4. Intention d'achat: `Je prends ce modèle, je m'appelle Amina, email amina@example.com`
+
+Pour quitter le mode interactif, utilisez `Ctrl + C`.
 
 ## 6. Checkpoint de sortie
 
@@ -95,5 +123,7 @@ Avant de passer à l'étape 04:
 - la recherche produit répond
 - le fallback fonctionne
 - la capture de lead répond correctement
+
+Note: l'objectif ici est de valider la logique agent via CLI. Le mode UI n'est pas utilisé dans cette étape.
 
 Passez à `04 - Déployer l'agent`.

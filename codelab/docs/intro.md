@@ -6,77 +6,86 @@ slug: /
     <img src="/img/bwai-wallpaper-2026.png" alt="Build with AI 2026 wallpaper" />
 </div>
 
-<span className="bwai-kicker"><span className="bwai-dot"></span> Build with AI Workshop</span>
+# Build with AI: Agent IA pour WhatsApp
 
-# De l'idée au WhatsApp Sales Agent
+Bienvenue dans cet atelier. Ici, l'objectif n'est pas de faire un chatbot de démonstration, mais de construire un agent utile pour un vrai usage business.
 
-<p className="bwai-lead">
-    Bienvenue dans ce workshop Build with AI.
-    Vous allez construire, déployer et exploiter un agent IA utile au business local,
-    connecté à un vrai backend et à Twilio WhatsApp.
-</p>
+En 2 heures, avec du code déjà préparé, vous allez assembler les briques essentielles, lancer les commandes, et obtenir un agent déployé qui peut répondre aux clients sur WhatsApp en s'appuyant sur des données réelles.
 
-<div className="bwai-grid">
-    <div className="bwai-card">
-        <h3>Backend fiable</h3>
-        <p>Catalogue produits, clients et API FastAPI déployés sur Cloud Run.</p>
-    </div>
-    <div className="bwai-card">
-        <h3>Agent intelligent</h3>
-        <p>Google ADK + outils métier pour recommander, qualifier et convertir.</p>
-    </div>
-    <div className="bwai-card">
-        <h3>Expérience WhatsApp</h3>
-        <p>Bridge Twilio pour des conversations opérationnelles en conditions réelles.</p>
-    </div>
-</div>
+## Pourquoi cet atelier existe
 
-## Contexte
+Dans beaucoup de petites entreprises, le même problème revient:
 
-Imaginez que vous avez une boutique à Bukavu.
+- les clients posent les mêmes questions toute la journée,
+- les réponses arrivent tard quand l'équipe est occupée,
+- les informations produit existent, mais ne sont pas accessibles rapidement dans la conversation.
 
-Vous avez déjà un système (site/app) qui gère les produits et les clients, mais en pratique beaucoup de clients écrivent sur WhatsApp.
-Le problème est simple:
+Cet atelier vous montre comment corriger ce problème avec une architecture simple: un agent qui lit un message, consulte un backend, répond correctement, et signale les intentions d'achat.
 
-- Vous devez répondre aux mêmes questions toute la journée.
-- Vous n'êtes pas toujours disponible.
-- Pour vérifier le stock/prix, vous devez ouvrir le site, chercher l'information, puis revenir sur WhatsApp.
+## Chatbot vs Agent (version claire)
 
-Résultat: perte de temps, charge mentale, réponses parfois lentes.
+Un chatbot classique suit surtout des scripts.
 
-L'idée de ce codelab est de construire un agent séparé de l'application principale:
+Un agent, lui, combine raisonnement + actions:
 
-- L'agent parle avec les clients sur WhatsApp.
-- L'agent utilise les endpoints backend pour lire les vraies données (produits, disponibilité, etc.).
-- Quand l'agent détecte une intention d'achat, il notifie le propriétaire sur WhatsApp.
+- il comprend l'intention du client,
+- il appelle des outils (APIs) pour lire de vraies données,
+- il adapte sa réponse au contexte,
+- il peut déclencher une action métier (ex: capture d'un prospect).
 
-Ainsi, le propriétaire gagne du temps et se concentre sur la vente.
-
-## C'est quoi un agent (version simple)
-
-Un LLM seul, c'est comme un étudiant brillant qui sait beaucoup de choses mais qui n'a pas accès au terrain.
-
-Un agent, c'est ce même étudiant à qui on donne des outils:
-
-- un clavier,
-- un ordinateur,
-- et surtout des fonctions qui appellent votre backend.
-
-Avec ces outils, il ne "devine" pas: il va chercher l'information réelle dans votre système avant de répondre.
-
-Dans cet atelier, vous allez construire et déployer une chaîne simple et robuste:
-
-1. Déployer `matos-backend` (catalogue + clients) et sauvegarder son URL.
-2. Construire l'agent avec des TODO guidés, puis le déployer.
-3. Construire le bridge WhatsApp Twilio, puis le déployer.
+Dans ce workshop, vous allez justement construire ce deuxième modèle: un agent qui agit, pas seulement un bot qui répète.
 
 ## Ce que vous allez construire
 
-Vous allez déployer trois services sur Cloud Run :
+Vous allez déployer trois services sur Google Cloud:
 
-- `matos-backend` : API produit et client.
-- `matos-agent-service` : Agent LLM qui appelle les outils backend.
-- `matos-whatsapp-bridge` : Pont webhook Twilio vers l'agent.
+1. `matos-backend`  
+    API produits/clients. C'est la source de vérité des données.
+
+2. `matos-agent-service`  
+    Le cerveau de l'application. Il interprète le message, appelle les outils backend, puis génère la réponse.
+
+3. `matos-whatsapp-bridge`  
+    La passerelle canal. Elle reçoit WhatsApp et transmet au service agent.
+
+## Ce que vous saurez faire à la fin
+
+À la fin de la session, vous aurez:
+
+- un agent déployé sur Cloud Run,
+- un flux de test fonctionnel via interface web,
+- une intégration WhatsApp prête ou en option selon le temps.
+
+Le plus important: vous comprendrez le schéma de base d'un agent de production réutilisable pour d'autres cas (support, vente, réservation, etc.).
+
+## Format de la session (2 heures)
+
+Le workshop est volontairement guidé et orienté exécution:
+
+- vous copiez/collez les commandes,
+- vous complétez quelques TODO ciblés,
+- vous validez chaque étape avec un test simple.
+
+Découpage recommandé:
+
+- Setup cloud et variables: 15 min
+- Déploiement backend: 15 min
+- Construction/test agent: 30 min
+- Déploiement agent: 20 min
+- Validation finale (web + WhatsApp optionnel): 40 min
+
+## Prérequis minimaux
+
+Il faut seulement:
+
+- des bases Python,
+- des bases terminal,
+- un compte Google Cloud,
+- un navigateur web.
+
+Vous n'avez pas besoin d'être expert DevOps pour suivre.
+
+Passez maintenant à `00 - Variables d'environnement`, puis `01 - Configuration`.
 
 ## Architecture utilisée dans cet atelier
 

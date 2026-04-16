@@ -178,6 +178,10 @@ typings/
 # Optional npm cache directory
 .npm
 .npm_cache/
+.npm-cache/
+
+# Firebase local state/cache
+.firebase/
 
 # Optional eslint cache
 .eslintcache
