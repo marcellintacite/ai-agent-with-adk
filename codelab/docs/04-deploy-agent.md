@@ -17,17 +17,17 @@ Avant de lancer le déploiement, vérifiez uniquement ces points:
 - `PROJECT_ID` est défini,
 - `REGION` est défini (atelier: `europe-west1`),
 - `MATOS_BACKEND_URL` est défini,
-- vous êtes dans le dossier `agent/`,
+- vous êtes dans le dossier `agent/matos/` (important!),
 - l'environnement virtuel est activé.
 
 Exécutez:
 
 ```bash
-cd agent
+cd agent/matos
 ```
 
 ```bash
-source venv/bin/activate
+source ../venv/bin/activate
 ```
 
 ```bash

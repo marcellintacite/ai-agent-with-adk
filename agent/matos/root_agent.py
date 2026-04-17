@@ -139,7 +139,7 @@ REGLES IMPORTANTES:
 """
 
 root_agent = LlmAgent(
-    name="matos_orchestrator",
+    name="matos",
     description="Assistant de vente multilingue pour Matos",
     instruction=MATOS_INSTRUCTIONS,
     tools=[search_products, save_customer_lead],

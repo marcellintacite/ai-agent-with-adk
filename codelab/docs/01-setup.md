@@ -1,49 +1,49 @@
-# 01 - Setup (Quick Start)
+# 01 - Configuration et Démarrage Rapide
 
-## Goal
-Get your project ready in 5 minutes: shell → editor → setup → done.
+## Objectif
+Préparez votre projet en 5 minutes: shell → éditeur → configuration → prêt.
 
-## 1. Open Google Cloud Console
+## 1. Ouvrir la console Google Cloud
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Check which project is active at the top
-3. If needed, create a new project and note its ID (e.g., `my-project-12345`)
+1. Allez sur [Google Cloud Console](https://console.cloud.google.com/)
+2. Vérifiez quel projet est actif en haut
+3. Au besoin, créez un nouveau projet et notez son ID (ex: `my-project-12345`)
 
-## 2. Open Cloud Shell
+## 2. Ouvrir Cloud Shell
 
-Click the Cloud Shell icon (>_) in the top toolbar and wait for it to be ready.
+Cliquez sur l'icône Cloud Shell (>_) dans la barre d'outils en haut et attendez qu'elle soit prête.
 
-## 3. Clone the workshop repository
+## 3. Cloner le dépôt du workshop
 
 ```bash
 git clone https://github.com/marcellintacite/ai-agent-with-adk
-cd build_with_ai_workshop
+cd ai-agent-with-adk
 ```
 
-## 4. Open the Editor
+## 4. Ouvrir l'éditeur
 
-From Cloud Shell, run:
+Depuis Cloud Shell, exécutez:
 
 ```bash
 cloudshell editor
 ```
 
-Or click **Open Editor** button. Navigate to open the `build_with_ai_workshop` folder.
+Ou cliquez sur le bouton **Open Editor**. Naviguez pour ouvrir le dossier `ai-agent-with-adk`.
 
-You should see: `agent/`, `backend/`, `matos-backend/`, `codelab/`, `frontend/`
+Vous devriez voir: `agent/`, `backend/`, `matos-backend/`, `codelab/`, `frontend/`
 
-## 5. Open Terminal in the Editor
+## 5. Ouvrir un terminal dans l'éditeur
 
-Click **Terminal** → **New Terminal** in the editor menu (or Ctrl+`)
+Cliquez sur **Terminal** → **New Terminal** dans le menu de l'éditeur (ou Ctrl+`)
 
-## 6. Set your Project & Region
+## 6. Configurer votre projet et région
 
 ```bash
-export PROJECT_ID="your-gcp-project-id"
+export PROJECT_ID="votre-id-projet-gcp"
 export REGION="europe-west1"
 ```
 
-Verify:
+Vérifiez:
 ```bash
 gcloud config set project "$PROJECT_ID"
 gcloud config get-value project
