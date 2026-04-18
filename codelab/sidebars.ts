@@ -21,6 +21,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'doc',
+      id: 'local-development',
+      label: 'Exécution locale complète',
+    },
+    {
+      type: 'doc',
       id: 'env-vars',
       label: 'Variables d\'environnement',
     },

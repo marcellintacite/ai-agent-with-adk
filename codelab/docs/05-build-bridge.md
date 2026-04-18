@@ -1,120 +1,40 @@
 # 05 - Construire le pont WhatsApp
 
-## Objectif de cette page
+Cette étape explique le role du service `backend/` avant le déploiement.
 
-Dans cette étape, vous préparez le service `backend/` qui fait le lien entre WhatsApp (Twilio) et votre agent.
+## Pourquoi ce service existe
 
-Ce service s'appelle "bridge" (pont), car il transporte les messages entre le canal et l'agent.
+Le bridge connecte les webhooks Twilio au runtime de l'agent. Il permet de séparer les préoccupations du canal de la logique IA.
 
-## Pourquoi ce bridge est nécessaire
+Résumé du flux :
 
-L'agent sait réfléchir et appeler vos outils métier.
+1. Recevoir le webhook WhatsApp.
+2. Valider la signature Twilio.
+3. Appeler le service agent.
+4. Retourner la réponse de l'agent.
 
-Mais WhatsApp n'appelle pas directement l'agent avec le bon format. Il faut une couche intermédiaire qui:
+La logique métier reste dans :
 
-1. reçoit les messages entrants,
-2. valide la sécurité de la requête,
-3. appelle l'agent,
-4. renvoie la réponse vers WhatsApp.
-
-Sans ce bridge, Twilio et l'agent ne peuvent pas communiquer correctement.
-
-## Pourquoi Twilio dans cet atelier
-
-Twilio est utilisé ici comme **exemple de canal**.
-
-L'idée importante est la suivante:
-
-- votre agent est le cerveau
-- Twilio est seulement un transport
-
-Vous pouvez brancher le même agent sur d'autres canaux plus tard:
-
-- web chat
-- application mobile
-- Telegram, Messenger, Slack
-- call center tooling
-
-## Ce que le bridge fait (et ne fait pas)
-
-Le bridge fait:
-
-- transport des messages,
-- validation de signature,
-- appel de l'agent,
-- retour de réponse vers le canal.
-
-Le bridge ne fait pas:
-
-- la logique métier produit,
-- la recommandation intelligente,
-- la gestion du catalogue.
-
-Ces responsabilités restent dans:
-
-- `matos-agent-service` (intelligence),
-- `matos-backend` (données).
-
-## Architecture simple
-
-Le service `backend/` (bridge) reste volontairement mince:
-
-1. recevoir un message entrant depuis un canal
-2. valider la requête du canal (ex: signature Twilio)
-3. appeler l'agent (`/run`)
-4. renvoyer la réponse au canal
-
-## Flux d'un message (pas à pas)
-
-1. Le client écrit sur WhatsApp.
-2. Twilio envoie un webhook au bridge (`POST /webhook/twilio`).
-3. Le bridge vérifie la signature Twilio.
-4. Le bridge appelle l'agent.
-5. L'agent interroge le backend si nécessaire.
-6. L'agent renvoie une réponse.
-7. Le bridge renvoie cette réponse à Twilio.
-8. Le client reçoit le message sur WhatsApp.
+- `matos-agent-service` pour le raisonnement et l'utilisation des outils,
+- `matos-backend` pour les données produit/client.
 
 ## Variables d'environnement requises
 
-Au déploiement du bridge, vous injectez:
-
-- `ADK_SERVICE_URL`  
-	URL publique du service agent.
-
-- `ADK_APP_NAME`  
-	Nom de l'app agent appelée par le bridge.
-
-- `TWILIO_ACCOUNT_SID`  
-	Identifiant du compte Twilio.
-
-- `TWILIO_AUTH_TOKEN`  
-	Secret Twilio pour valider les webhooks entrants.
-
-- `TWILIO_FROM_NUMBER`  
-	Numéro WhatsApp utilisé pour envoyer les réponses.
-
-- `OWNER_PHONE`  
-	Numéro du propriétaire pour les notifications.
+- `ADK_SERVICE_URL` : URL de l'agent déployé,
+- `ADK_APP_NAME` : nom de l'application déployée (`matos`),
+- `TWILIO_ACCOUNT_SID` : ID de compte Twilio (optionnel si vous n'utilisez pas encore le parcours WhatsApp),
+- `TWILIO_AUTH_TOKEN` : secret webhook Twilio (optionnel pour un parcours non-Twilio),
+- `TWILIO_FROM_NUMBER` : numero d'envoi WhatsApp,
+- `OWNER_PHONE` : numero de notification proprietaire.
 
 ## Endpoints du bridge
 
-- `POST /webhook/twilio`: reçoit les messages WhatsApp entrants
-- `POST /notify/owner`: envoie une notification au propriétaire
-- `GET /health`: vérifie que le service est en ligne
+- `POST /webhook/twilio`
+- `POST /chat`
+- `GET /health`
 
-## Résultat attendu en fin d'étape
+## Vérification
 
-À ce stade, vous devez comprendre clairement:
+Vous etes pret pour le déploiement lorsque vous comprenez les responsabilités du bridge et les variables requises.
 
-- pourquoi ce service existe,
-- quelles variables il consomme,
-- quels endpoints seront testés après déploiement.
-
-## Important: Twilio est un exemple, pas une limite
-
-Si vous ne souhaitez pas finaliser Twilio maintenant, vous pourrez tester l'agent avec une interface web locale en fin de workshop.
-
-Continuez d'abord avec le parcours principal Twilio.
-
-Passez à `06 - Déployer le pont WhatsApp`.
+Suite : `06 - Deploy the WhatsApp Bridge`

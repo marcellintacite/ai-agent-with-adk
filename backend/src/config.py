@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -17,8 +18,8 @@ class Settings(BaseSettings):
     ADK_APP_NAME: str = "matos"
     
     # Twilio Config
-    TWILIO_ACCOUNT_SID: str | None = None
-    TWILIO_AUTH_TOKEN: str | None = None
+    TWILIO_ACCOUNT_SID: Optional[str] = None
+    TWILIO_AUTH_TOKEN: Optional[str] = None
     TWILIO_FROM_NUMBER: str = "whatsapp:+14155238886"
     OWNER_PHONE: str = "whatsapp:+243999537410"
 

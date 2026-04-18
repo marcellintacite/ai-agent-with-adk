@@ -126,7 +126,7 @@ class LeadRequest(BaseModel):
 
 class WebChatRequest(BaseModel):
     message: str
-    user_id: str | None = None
+    user_id: Optional[str] = None
 
 
 class WebChatResponse(BaseModel):

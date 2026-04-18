@@ -1,121 +1,36 @@
 # 04 - Déployer l'agent
 
-## Objectif de cette page
+Cette étape déploie le service agent sur Cloud Run.
 
-Dans cette étape, vous faites une seule chose: déployer l'agent sur Cloud Run.
+## Résultat attendu
 
-À la fin, vous aurez:
+- `matos-agent-service` est déployé,
+- `MATOS_AGENT_URL` est exportée,
+- l'interface dev UI est accessible.
 
-- un service Cloud Run `matos-agent-service` en ligne,
-- une URL d'agent sauvegardée dans `MATOS_AGENT_URL`,
-- une interface de test accessible.
-
-## 1. Préparer le contexte de déploiement
-
-Avant de lancer le déploiement, vérifiez uniquement ces points:
-
-- `PROJECT_ID` est défini,
-- `REGION` est défini (atelier: `europe-west1`),
-- `MATOS_BACKEND_URL` est défini,
-- vous êtes dans le dossier `agent/matos/` (important!),
-- l'environnement virtuel est activé.
-
-Exécutez:
+## 1. Déployer depuis le bon dossier
 
 ```bash
 cd agent/matos
-```
-
-```bash
 source ../venv/bin/activate
-```
-
-```bash
 export BACKEND_URL="$MATOS_BACKEND_URL"
-```
-
-Vérifiez:
-
-```bash
-echo "PROJECT_ID=$PROJECT_ID"
-```
-
-```bash
-echo "REGION=$REGION"
-```
-
-```bash
-echo "BACKEND_URL=$BACKEND_URL"
-```
-
-Si une valeur est vide, corrigez-la avant de continuer.
-
-## 2. Déployer l'agent sur Cloud Run
-
-Exécutez la commande de déploiement:
-
-```bash
 adk deploy cloud_run --project "$PROJECT_ID" --region "$REGION" --service_name matos-agent-service --with_ui .
 ```
 
-Explication simple de cette commande:
-
-- `adk deploy cloud_run`: demande à ADK de construire et déployer l'agent,
-- `--project`: indique dans quel projet GCP déployer,
-- `--region`: indique la région du service,
-- `--service_name matos-agent-service`: fixe le nom du service,
-- `--with_ui`: active l'interface web de test,
-- `.`: utilise le dossier courant (`agent/`) comme source.
-
-## 3. Récupérer l'URL du service déployé
-
-Quand le déploiement est terminé, copiez l'URL de votre service Cloud Run ici.
+## 2. Enregistrer l'URL du service
 
 ```bash
-# TODO: collez ici l'URL Cloud Run de votre agent après le déploiement
-export MATOS_AGENT_URL=""
-```
-
-Si vous préférez récupérer l'URL dans le terminal, vous pouvez aussi l'afficher avec:
-
-```bash
-gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url)'
-```
-
-Puis:
-
-```bash
+export MATOS_AGENT_URL="$(gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url)')"
 echo "$MATOS_AGENT_URL"
 ```
 
-Remplacez la valeur vide par votre URL avant de passer à l'étape suivante.
-
-## 4. Vérifier que l'agent est bien en ligne
-
-Exécutez:
-
-```bash
-gcloud run services describe matos-agent-service --region "$REGION" --format='value(status.url,status.traffic[0].percent)'
-```
-
-Puis testez l'interface:
+## 3. Valider le déploiement
 
 ```bash
 curl -I "$MATOS_AGENT_URL/dev-ui/"
+curl -I "$MATOS_AGENT_URL/dev/build_graph_image/matos?dark_mode=true"
 ```
 
-Résultat attendu:
+Si les deux endpoints répondent, continuez.
 
-- le service existe,
-- le trafic est bien routé,
-- `/dev-ui/` répond (200 ou redirection).
-
-## 5. Checkpoint de sortie
-
-Vous pouvez passer à l'étape suivante si:
-
-- `MATOS_AGENT_URL` est non vide,
-- `curl -I "$MATOS_AGENT_URL/dev-ui/"` répond,
-- le nom du service est bien `matos-agent-service`.
-
-Passez à `05 - Construire le pont WhatsApp`.
+Suite : `05 - Build the WhatsApp Bridge`

@@ -1,23 +1,26 @@
-# Environment Variables Reference
+# 00 - Variables d'environnement
 
-These variables are set during setup and used throughout the workshop.
+Cette page est votre référence rapide pour les variables utilisées pendant l'atelier.
 
-| Variable | Value | Purpose |
-|----------|-------|---------|
-| `PROJECT_ID` | Your GCP project ID | Identifies your Google Cloud project |
-| `REGION` | `europe-west1` | Region for all deployed services |
-| `MATOS_BACKEND_URL` | Set after deploying backend | URL of the Matos backend service |
-| `AGENT_URL` | Set after deploying agent | URL of the deployed AI agent |
+## Variables principales
 
-## How they're set
+| Variable | Exemple | Définie à l'étape |
+|----------|---------|-------------------|
+| `PROJECT_ID` | `my-project-12345` | Étape 01 |
+| `REGION` | `europe-west1` | Étape 01 |
+| `MATOS_BACKEND_URL` | `https://matos-backend-service-...run.app` | Étape 02 |
+| `MATOS_AGENT_URL` | `https://matos-agent-service-...run.app` | Étape 04 |
+| `BRIDGE_URL` | `https://matos-whatsapp-bridge-...run.app` | Étape 06 |
 
-All variables are defined in your terminal session during [Setup](01-setup.md).
+## Configuration à faire une seule fois (par session de terminal)
 
-If you restart your terminal or open a new session, re-run Step 6 from [Setup](01-setup.md):
+Pour les variables d'environnement : ouvrez d'abord l'éditeur, puis ouvrez le terminal.
+
+Exécutez ceci uniquement lorsque vous ouvrez une nouvelle session de terminal :
 
 ```bash
 export PROJECT_ID="your-gcp-project-id"
 export REGION="europe-west1"
 ```
 
-That's it. Everything else builds from there.
+Ensuite, définissez les URLs des services dans leurs étapes dédiées (02, 04, 06). Cela permet de garder chaque étape claire et d'éviter de redéclarer les variables inutilement.
