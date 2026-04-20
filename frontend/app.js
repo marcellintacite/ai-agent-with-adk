@@ -123,7 +123,7 @@ function syncInputs() {
 
 function validateConfig() {
   if (!state.bridgeUrl.startsWith("http")) {
-    throw new Error("Bridge URL invalide. Exemple: https://matos-whatsapp-bridge-xxx.run.app");
+    throw new Error("Bridge URL invalide. Exemple: https://matos-bridge-xxx.run.app");
   }
   if (!state.userId) {
     throw new Error("User ID est requis.");

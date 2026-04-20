@@ -150,14 +150,12 @@ Expected: Agent saves to backend, confirms with ID
 ## Architecture Overview
 
 ```
-User (WhatsApp)
+User (Frontend test)
     ↓
-Twilio (incoming message)
-    ↓
-Backend WhatsApp Bridge [:8080]
-    → Validates Twilio signature
+Backend Bridge [:8080]
+  → Receives POST /chat
     → Calls ADK Agent service
-    → Returns TwiML response
+  → Returns JSON response
     ↓
 ADK Agent Service (Cloud Run)
     → Processes user query
@@ -175,7 +173,7 @@ Matos Backend API [:8080]
 
 1. **Deployment**: Deploy all 3 services following the "Quick Setup" section
 2. **Verification**: Run all tests in the "Verification Checklist"
-3. **Integration**: Connect WhatsApp Bridge to agent (see `05-deploy-bridge.md`)
+3. **Integration**: Connect frontend webhook/chat to bridge service
 4. **Monitoring**: Use Cloud Run logs to debug issues
 
 ## Files Changed

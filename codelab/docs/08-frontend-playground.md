@@ -1,41 +1,51 @@
-# 08 - Frontend Playground (No Twilio)
+# 08 - Frontend Playground (webhook/chat)
 
-Use this page if you want to test agent behavior from a browser without waiting for Twilio setup.
+Cette étape est le chemin principal pour tester l'agent depuis un navigateur.
 
-## Prerequisites
+## Prérequis
 
-- `MATOS_AGENT_URL` is available (Step 04),
-- `BRIDGE_URL` is available (Step 06, recommended),
-- services are online.
+- `MATOS_AGENT_URL` est disponible (Étape 04),
+- `BRIDGE_URL` est disponible (recommandé),
+- les services sont en ligne.
 
-## 1. Run frontend locally
+Si vous n'avez pas encore `BRIDGE_URL`, déployez le bridge rapidement :
+
+```bash
+cd backend
+chmod +x deploy_bridge.sh
+./deploy_bridge.sh
+```
+
+Le script lit `PROJECT_ID`, `REGION` et `MATOS_AGENT_URL`, puis construit et déploie automatiquement le service `matos-bridge`.
+
+## 1. Lancer le frontend localement
 
 ```bash
 cd frontend
 python3 -m http.server 5174
 ```
 
-Open:
+Ouvrez :
 
 ```text
 http://localhost:5174
 ```
 
-## 2. Configure chat UI
+## 2. Configurer l'interface
 
-1. Paste `BRIDGE_URL` in the URL field.
-2. Keep or edit `userId`.
-3. Send a test message.
+1. Collez `BRIDGE_URL` dans le champ URL.
+2. Gardez ou modifiez `userId`.
+3. Envoyez un message de test.
 
-Using `BRIDGE_URL` is recommended because it avoids CORS issues and matches the production request path.
+L'utilisation de `BRIDGE_URL` est recommandée car elle évite les problèmes CORS et reproduit le chemin de requête de production.
 
-## 3. Recommended test prompts
+## 3. Prompts recommandés
 
 1. `Hello, I need a laptop`
 2. `niko na tafuta machine ya 16go RAM`
 3. `I want this model, my name is Amina, email amina@example.com`
 
-## 4. Optional: deploy frontend on Cloud Run
+## 4. Optionnel : déployer le frontend sur Cloud Run
 
 ```bash
 cd frontend
@@ -50,11 +60,13 @@ export FRONTEND_URL="$(gcloud run services describe matos-frontend --region "$RE
 echo "$FRONTEND_URL"
 ```
 
-## 5. If messages fail
+## 5. En cas d'échec des messages
 
 ```bash
-gcloud run services logs read matos-whatsapp-bridge --region "$REGION" --limit 50
+gcloud run services logs read matos-bridge --region "$REGION" --limit 50
 gcloud run services logs read matos-agent-service --region "$REGION" --limit 50
 ```
 
-Check that the frontend is calling `POST /chat` on the bridge URL.
+Vérifiez que le frontend appelle bien `POST /chat` sur l'URL du bridge.
+
+Après cette étape, vous pouvez ajouter un webhook vers WhatsApp, Telegram ou une autre plateforme en réutilisant le même bridge.

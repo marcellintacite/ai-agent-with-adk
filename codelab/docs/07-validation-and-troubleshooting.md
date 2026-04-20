@@ -23,11 +23,11 @@ curl -fsS "$MATOS_BACKEND_URL/products" | head
 - Vérifiez que le runtime de l'agent a `BACKEND_URL=$MATOS_BACKEND_URL`.
 - Vérifiez que le service backend est sain.
 
-### B) Le bridge renvoie 500 sur le webhook Twilio
+### B) Le bridge renvoie 500 sur `/chat`
 
 - Vérifiez que `ADK_SERVICE_URL` pointe vers `MATOS_AGENT_URL`.
 - Vérifiez que `ADK_APP_NAME=matos`.
-- Vérifiez que les secrets Twilio sont attachés au moment du déploiement.
+- Vérifiez que le service bridge est bien déployé et accessible.
 
 ### C) L'endpoint graph du bridge renvoie 404
 
@@ -38,9 +38,9 @@ curl -fsS "$MATOS_BACKEND_URL/products" | head
 curl -I "$MATOS_AGENT_URL/dev/build_graph_image/matos?dark_mode=true"
 ```
 
-### D) Pas de réponse WhatsApp
+### D) Pas de réponse dans le frontend
 
-- Vérifiez que l'URL webhook Twilio Sandbox est `${BRIDGE_URL}/webhook/twilio`.
+- Vérifiez que le frontend appelle `${BRIDGE_URL}/chat`.
 - Vérifiez les logs du bridge et de l'agent.
 
 ## 4. Vérification du comportement de bout en bout
@@ -55,9 +55,9 @@ curl -I "$MATOS_AGENT_URL/dev/build_graph_image/matos?dark_mode=true"
 ```bash
 gcloud run services logs read matos-backend-service --region "$REGION" --limit 50
 gcloud run services logs read matos-agent-service --region "$REGION" --limit 50
-gcloud run services logs read matos-whatsapp-bridge --region "$REGION" --limit 50
+gcloud run services logs read matos-bridge --region "$REGION" --limit 50
 ```
 
-## 6. Si Twilio n'est pas prêt
+## 6. Parcours principal recommandé
 
-Utilisez `08 - Frontend Playground (No Twilio)` pour valider le comportement complet de l'agent via le chat web.
+Utilisez `08 - Frontend Playground (webhook/chat)` pour valider le comportement complet de l'agent via le chat web.

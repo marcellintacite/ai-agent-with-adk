@@ -89,18 +89,13 @@ export ADK_APP_NAME="matos"
 python -m uvicorn src.main:app --host 0.0.0.0 --port 8000
 ```
 
-Le bridge expose `POST /chat`, `POST /webhook/twilio` et `GET /health`.
+Le bridge expose `POST /chat` et `GET /health`.
 
-Si vous obtenez cette erreur au démarrage du bridge : `TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'`, voici deux possibilités :
+Si vous obtenez cette erreur au démarrage du bridge : `TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'`, voici la solution :
 
 1. Utiliser Python 3.10 ou plus récent pour le venv du bridge.
 	- Vérifiez avec `python --version` dans le venv.
 	- Si la version est trop ancienne, recréez le venv avec un Python plus récent, puis réinstallez les dépendances.
-
-2. Remplacer les annotations `str | None` par `Optional[str]` dans `backend/src/config.py`.
-	- Ajoutez `from typing import Optional`.
-	- Remplacez `str | None` par `Optional[str]` pour `TWILIO_ACCOUNT_SID` et `TWILIO_AUTH_TOKEN`.
-	- Cette option sert surtout si vous devez garder une version Python plus ancienne.
 
 ## 4. Démarrer le frontend
 

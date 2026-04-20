@@ -6,11 +6,11 @@ slug: /
     <img src="/img/bwai-wallpaper-2026.png" alt="Build with AI 2026 wallpaper" />
 </div>
 
-# Build with AI : Agent IA WhatsApp
+# Build with AI : Agent IA pour Webhook et Frontend
 
 Bienvenue dans cet atelier. L'objectif n'est pas de construire un chatbot de démonstration, mais de livrer un agent IA utile pour un vrai cas métier.
 
-En environ 2 heures, vous allez assembler les composants essentiels, exécuter les commandes de déploiement, et obtenir un agent de style production capable de répondre aux clients sur WhatsApp à partir de données produits réelles.
+En environ 2 heures, vous allez assembler les composants essentiels, exécuter les commandes de déploiement, et obtenir un agent de style production capable de répondre aux clients via un endpoint webhook/chat à partir de données produits réelles.
 
 ## Présentation
 
@@ -54,8 +54,8 @@ Vous allez déployer trois services sur Google Cloud :
 2. `matos-agent-service`  
    Runtime de l'agent. Comprend l'entrée utilisateur, appelle des outils et produit les réponses.
 
-3. `matos-whatsapp-bridge`  
-   Pont de canal. Reçoit les webhooks WhatsApp et transmet les requêtes à l'agent.
+3. `matos-bridge`  
+   Pont de canal. Reçoit les requêtes webhook/chat et transmet les requêtes à l'agent.
 
 ## Résultats attendus
 
@@ -63,7 +63,7 @@ Vous allez déployer trois services sur Google Cloud :
 
 - un agent IA déployé sur Cloud Run,
 - un flux de test web fonctionnel,
-- une intégration WhatsApp de bout en bout, optionnelle.
+- une base prête pour connecter plus tard WhatsApp, Telegram ou une autre plateforme.
 
 Le plus important : vous comprendrez un schéma de production réutilisable pour le support, la vente et la réservation.
 
@@ -73,7 +73,7 @@ Le plus important : vous comprendrez un schéma de production réutilisable pour
 - Déploiement du backend : 15 min
 - Construction et validation locale de l'agent : 30 min
 - Déploiement de l'agent : 20 min
-- Validation finale (web + WhatsApp optionnel) : 40 min
+- Validation finale (webhook/chat + frontend) : 40 min
 
 ## Prérequis
 
@@ -88,13 +88,12 @@ Vous n'avez pas besoin d'être expert DevOps pour suivre cet atelier.
 
 - [ADK](https://adk.dev/)
 - [Google Cloud Platform (GCP)](https://cloud.google.com/)
-- [Twilio (facultatif)](https://www.twilio.com/)
 
 Commencez par `00 - Variables d'environnement`, puis continuez avec `01 - Configuration`.
 
 ## Aperçu du résultat final
 
-Voici l'interface frontend finale utilisée pour tester l'agent sans Twilio :
+Voici l'interface frontend finale utilisée pour tester l'agent :
 
 <div className="bwai-hero">
     <img src="/Screenshot%202026-04-18%20at%2014.17.03.png" alt="Résultat final du frontend Matos" />
@@ -104,15 +103,14 @@ Voici l'interface frontend finale utilisée pour tester l'agent sans Twilio :
 
 ```mermaid
 graph TD
-   User((Client)) -->|WhatsApp| Twilio[Twilio WhatsApp Sandbox]
-    Twilio -->|Webhook POST| Bridge[matos-whatsapp-bridge]
+   User((Client frontend)) -->|POST /chat| Bridge[matos-bridge]
     Bridge -->|POST /run| Agent[matos-agent-service]
    Agent -->|Outils HTTP| MatosAPI[matos-backend]
 ```
 
 ### Pourquoi ce flux fonctionne
 
-- Le bridge reste simple (transport + sécurité Twilio).
+- Le bridge reste simple (transport des requêtes webhook/chat).
 - La logique métier conversationnelle reste dans l'agent.
 - Le backend reste réutilisable pour d'autres canaux plus tard.
 
@@ -121,6 +119,8 @@ graph TD
 - Déployer une architecture IA multi-services sur Cloud Run.
 - Gérer des variables d'environnement réutilisables dans Cloud Shell.
 - Comprendre comment un agent utilise des outils pour accéder à des données réelles.
-- Intégrer Twilio WhatsApp avec des identifiants sécurisés.
+- Tester un flux complet via frontend + endpoint webhook/chat.
+
+Vous pourrez ensuite brancher ce webhook sur WhatsApp, Telegram ou toute autre plateforme de messagerie.
 
 Pour lancer toute la pile en local sans GCP, allez à `09 - Exécution locale complète`.

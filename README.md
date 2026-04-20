@@ -1,12 +1,12 @@
-# Atelier Build with AI : Assistant WhatsApp Intelligent
+# Atelier Build with AI : Agent IA pour Webhook et Frontend
 
 ## Contexte
 
-Imaginez une petite entreprise à Bukavu qui doit répondre aux mêmes questions tous les jours sur ses produits, et parfois le propriétaire n'est pas disponible. Cet atelier vous guide pour créer un agent intelligent qui gère les interactions WhatsApp avec les clients sur WhatsApp Business. Quand un client montre un intérêt réel pour un achat, l'agent notifie le propriétaire pour finaliser la vente.
+Imaginez une petite entreprise à Bukavu qui doit répondre aux mêmes questions tous les jours sur ses produits, et parfois le propriétaire n'est pas disponible. Cet atelier vous guide pour créer un agent intelligent qui répond aux clients via une interface web de test et un endpoint webhook/chat.
 
 ## Objectif
 
-Construire et déployer un assistant WhatsApp de style production utilisant l'IA, avec une architecture en trois services déployés sur Google Cloud Run.
+Construire et déployer un assistant de style production utilisant l'IA, avec une architecture en trois services déployés sur Google Cloud Run.
 
 ## Comment ça marche
 
@@ -14,31 +14,32 @@ L'assistant utilise une chaîne de services claire :
 
 1. **matos-backend** : API pour le catalogue de produits et la gestion des clients (SQLite).
 2. **matos-agent-service** : Agent LLM (Google ADK) qui appelle les outils backend pour rechercher des produits et sauvegarder des prospects.
-3. **matos-whatsapp-bridge** : Pont Twilio qui reçoit les messages WhatsApp et les transmet à l'agent.
+3. **matos-bridge** : Service webhook/chat qui reçoit les requêtes frontend et les transmet à l'agent.
 
 ### Architecture
 
 ```mermaid
 graph TD
-    Client((Client)) -->|WhatsApp| Twilio[Twilio WhatsApp Sandbox]
-    Twilio -->|Webhook POST| Bridge[matos-whatsapp-bridge]
+    Client((Frontend test)) -->|POST /chat| Bridge[matos-bridge]
     Bridge -->|POST /run| Agent[matos-agent-service]
     Agent -->|Outils HTTP| Backend[matos-backend]
 ```
 
-L'agent répond en français ou swahili selon la langue de l'utilisateur, recherche des produits, collecte les informations d'achat et notifie le propriétaire.
+L'agent répond en français ou swahili selon la langue de l'utilisateur, recherche des produits et collecte les informations d'achat.
+
+Note: vous pourrez ensuite connecter le même webhook à WhatsApp, Telegram ou une autre plateforme si besoin.
 
 ## Structure du projet
 
 ```
 build_with_ai_workshop/
-├── agents/                    # Code de l'agent IA
+├── agent/                     # Code de l'agent IA
 │   ├── requirements.txt       # Dépendances Python pour l'agent
-│   ├── root_agent.py          # Agent principal avec outils TODO
-│   └── data/                  # Données des produits
-├── backend/                   # Pont WhatsApp Twilio
+│   ├── matos/root_agent.py    # Agent principal avec outils
+│   └── .env                   # Variables d'environnement agent
+├── backend/                   # Bridge webhook/chat
 │   ├── requirements.txt       # Dépendances Python
-│   ├── main.py                # Application FastAPI pour le pont
+│   ├── src/main.py            # Application FastAPI pour le bridge
 │   └── ...                    # Configuration et logger
 ├── matos-backend/             # Backend API des produits
 │   ├── requirements.txt       # Dépendances Python
@@ -59,7 +60,6 @@ build_with_ai_workshop/
 ## Prérequis
 
 - Compte Google Cloud avec crédits
-- Compte Twilio avec sandbox WhatsApp
 - Python 3.12+
 - Node.js pour la documentation
 
@@ -70,17 +70,28 @@ build_with_ai_workshop/
 3. **Déployer le backend** : API des produits sur Cloud Run.
 4. **Construire l'agent** : Implémenter les outils TODO.
 5. **Déployer l'agent** : Service ADK sur Cloud Run.
-6. **Construire le pont** : Intégration Twilio.
-7. **Déployer le pont** : Avec secrets Twilio.
-8. **Tester** : Envoyer des messages WhatsApp.
+6. **Configurer le frontend** : URL du bridge webhook/chat.
+7. **Tester** : Envoyer des messages via le frontend.
 
 Suivez les étapes détaillées dans `codelab/docs/`.
+
+## Déploiement rapide du webhook
+
+Pour déployer le bridge webhook/chat rapidement :
+
+```bash
+cd backend
+chmod +x deploy_bridge.sh
+./deploy_bridge.sh
+```
+
+Le script utilise `PROJECT_ID`, `REGION` et `MATOS_AGENT_URL`, puis affiche la valeur `BRIDGE_URL` à exporter.
 
 ## Technologies utilisées
 
 - **Backend** : FastAPI, Pydantic, SQLite
 - **Agent** : Google ADK (LlmAgent), outils Python
-- **Pont** : Twilio SDK, validation de signature
+- **Bridge** : FastAPI, endpoint `/chat`
 - **Déploiement** : Google Cloud Run, Cloud Build
 - **Documentation** : Docusaurus
 - **Langages** : Python, TypeScript

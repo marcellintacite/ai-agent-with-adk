@@ -33,4 +33,4 @@ curl -I "$MATOS_AGENT_URL/dev/build_graph_image/matos?dark_mode=true"
 
 Si les deux endpoints répondent, continuez.
 
-Suite : `05 - Build the WhatsApp Bridge`
+Suite : `08 - Frontend Playground (webhook/chat)`

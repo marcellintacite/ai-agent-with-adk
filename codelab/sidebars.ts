@@ -51,23 +51,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'doc',
-      id: 'build-bridge',
-      label: 'Construire le pont WhatsApp',
-    },
-    {
-      type: 'doc',
-      id: 'deploy-bridge',
-      label: 'Déployer le pont WhatsApp',
+      id: 'frontend-playground',
+      label: 'Frontend de test (webhook/chat)',
     },
     {
       type: 'doc',
       id: 'validation-and-troubleshooting',
       label: 'Validation et dépannage',
-    },
-    {
-      type: 'doc',
-      id: 'frontend-playground',
-      label: 'Frontend de test (sans Twilio)',
     },
   ],
 
