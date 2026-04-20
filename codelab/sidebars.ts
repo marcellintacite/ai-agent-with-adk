@@ -21,11 +21,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'doc',
-      id: 'local-development',
-      label: 'Exécution locale complète',
-    },
-    {
-      type: 'doc',
       id: 'env-vars',
       label: 'Variables d\'environnement',
     },
@@ -58,6 +53,11 @@ const sidebars: SidebarsConfig = {
       type: 'doc',
       id: 'validation-and-troubleshooting',
       label: 'Validation et dépannage',
+    },
+    {
+      type: 'doc',
+      id: 'local-development',
+      label: 'Exécution locale complète',
     },
   ],
 

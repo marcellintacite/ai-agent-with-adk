@@ -73,6 +73,7 @@ function scrollMessagesToBottom(behavior = "smooth") {
 async function callAgent(message) {
   const payload = {
     message,
+    user_id: state.userId,
     userId: state.userId,
   };
 
@@ -89,7 +90,7 @@ async function callAgent(message) {
   }
 
   const data = await response.json();
-  if (data.user_id && !state.userId) {
+  if (data.user_id) {
     state.userId = data.user_id;
   }
   return data.reply || "L'agent n'a renvoye aucun texte.";

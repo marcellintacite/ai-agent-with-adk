@@ -6,11 +6,15 @@ slug: /
     <img src="/img/bwai-wallpaper-2026.png" alt="Build with AI 2026 wallpaper" />
 </div>
 
-# Build with AI : Agent IA pour Webhook et Frontend
+# Designing Useful AI Agents: From Q&A to Real Business Impact with ADK
 
 Bienvenue dans cet atelier. L'objectif n'est pas de construire un chatbot de démonstration, mais de livrer un agent IA utile pour un vrai cas métier.
 
-En environ 2 heures, vous allez assembler les composants essentiels, exécuter les commandes de déploiement, et obtenir un agent de style production capable de répondre aux clients via un endpoint webhook/chat à partir de données produits réelles.
+Dans ce workshop, l'exemple concret est la boutique Matos a Bukavu, specialisee dans la vente d'ordinateurs haut de gamme. La boutique dispose deja d'un site avec le stock, les prix et les details produits, mais dans la pratique la majorite des interactions clients passent par messagerie.
+
+Le probleme metier est simple : le gerant n'est pas toujours disponible, la connexion n'est pas garantie, et il doit repondre aux memes questions sur les memes produits des dizaines de fois par jour. L'objectif est donc de rendre la boutique operationnelle 24h/24 sans dependre de sa disponibilite en permanence.
+
+En environ 2 heures, vous allez assembler les composants essentiels, executer les commandes de deploiement, et obtenir un agent de style production capable de repondre aux clients via un endpoint webhook/chat a partir de donnees produits reelles.
 
 ## Présentation
 
@@ -29,7 +33,7 @@ Beaucoup de petites entreprises rencontrent les mêmes problèmes :
 - les réponses arrivent tard quand l'équipe est occupée,
 - les données produit existent, mais ne sont pas disponibles dans le flux de conversation.
 
-Cet atelier montre comment résoudre cela avec une architecture simple : l'agent lit un message, appelle des outils, récupère des données réelles, répond clairement et capture l'intention d'achat.
+Cet atelier montre comment resoudre cela avec une architecture simple : l'agent lit un message, appelle des outils, recupere des donnees reelles, repond clairement et capture l'intention d'achat.
 
 ## Chatbot vs Agent
 
@@ -80,6 +84,7 @@ Le plus important : vous comprendrez un schéma de production réutilisable pour
 - bases Python,
 - utilisation basique du terminal,
 - un projet Google Cloud,
+- des credits Google Cloud disponibles pour le deploiement (Cloud Run, Cloud Build),
 - un navigateur web.
 
 Vous n'avez pas besoin d'être expert DevOps pour suivre cet atelier.
@@ -99,13 +104,14 @@ Voici l'interface frontend finale utilisée pour tester l'agent :
     <img src="/Screenshot%202026-04-18%20at%2014.17.03.png" alt="Résultat final du frontend Matos" />
 </div>
 
-## Architecture utilisée dans cet atelier
+## Architecture de reference
 
-```mermaid
-graph TD
-   User((Client frontend)) -->|POST /chat| Bridge[matos-bridge]
-    Bridge -->|POST /run| Agent[matos-agent-service]
-   Agent -->|Outils HTTP| MatosAPI[matos-backend]
+Cette architecture est volontairement simple pour rester lisible pendant la session :
+
+```text
+Client (frontend) -> matos-bridge (POST /chat)
+matos-bridge -> matos-agent-service (POST /run)
+matos-agent-service -> matos-backend (outils HTTP)
 ```
 
 ### Pourquoi ce flux fonctionne
@@ -123,4 +129,4 @@ graph TD
 
 Vous pourrez ensuite brancher ce webhook sur WhatsApp, Telegram ou toute autre plateforme de messagerie.
 
-Pour lancer toute la pile en local sans GCP, allez à `09 - Exécution locale complète`.
+Pour lancer toute la pile en local sans GCP, allez a `09 - Execution locale complete`.

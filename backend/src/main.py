@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.config import settings
 from src.logger import setup_logging, logger
@@ -86,8 +86,10 @@ async def call_adk_agent(http: httpx.AsyncClient, user_id: str, message: str) ->
 
 
 class WebChatRequest(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
     message: str
-    user_id: Optional[str] = None
+    user_id: Optional[str] = Field(default=None, alias="userId")
 
 
 class WebChatResponse(BaseModel):

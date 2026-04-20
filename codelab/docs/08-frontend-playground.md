@@ -1,11 +1,11 @@
 # 08 - Frontend Playground (webhook/chat)
 
-Cette étape est le chemin principal pour tester l'agent depuis un navigateur.
+Cette étape est le chemin principal pour tester l'agent depuis le frontend déployé.
 
 ## Prérequis
 
 - `MATOS_AGENT_URL` est disponible (Étape 04),
-- `BRIDGE_URL` est disponible (recommandé),
+- `BRIDGE_URL` est disponible,
 - les services sont en ligne.
 
 Si vous n'avez pas encore `BRIDGE_URL`, déployez le bridge rapidement :
@@ -18,34 +18,23 @@ chmod +x deploy_bridge.sh
 
 Le script lit `PROJECT_ID`, `REGION` et `MATOS_AGENT_URL`, puis construit et déploie automatiquement le service `matos-bridge`.
 
-## 1. Lancer le frontend localement
+Vous pouvez retrouver l'URL du webhook ici :
 
 ```bash
-cd frontend
-python3 -m http.server 5174
+echo "$BRIDGE_URL"
+echo "${BRIDGE_URL}/chat"
 ```
 
-Ouvrez :
+Si `BRIDGE_URL` n'est pas exportee dans votre session :
 
-```text
-http://localhost:5174
+```bash
+export BRIDGE_URL="$(gcloud run services describe matos-bridge --region "$REGION" --format='value(status.url)')"
+echo "$BRIDGE_URL"
 ```
 
-## 2. Configurer l'interface
+Le webhook frontend a utiliser est : `${BRIDGE_URL}/chat`.
 
-1. Collez `BRIDGE_URL` dans le champ URL.
-2. Gardez ou modifiez `userId`.
-3. Envoyez un message de test.
-
-L'utilisation de `BRIDGE_URL` est recommandée car elle évite les problèmes CORS et reproduit le chemin de requête de production.
-
-## 3. Prompts recommandés
-
-1. `Hello, I need a laptop`
-2. `niko na tafuta machine ya 16go RAM`
-3. `I want this model, my name is Amina, email amina@example.com`
-
-## 4. Optionnel : déployer le frontend sur Cloud Run
+## 1. Déployer le frontend sur Cloud Run
 
 ```bash
 cd frontend
@@ -60,7 +49,13 @@ export FRONTEND_URL="$(gcloud run services describe matos-frontend --region "$RE
 echo "$FRONTEND_URL"
 ```
 
-## 5. En cas d'échec des messages
+## 2. Tester depuis le frontend déployé
+
+1. Ouvrez `FRONTEND_URL` dans le navigateur.
+2. Collez `BRIDGE_URL` dans le champ URL de l'interface.
+3. Gardez ou modifiez `userId`, puis envoyez un message de test.
+
+## 3. En cas d'échec des messages
 
 ```bash
 gcloud run services logs read matos-bridge --region "$REGION" --limit 50
