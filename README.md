@@ -87,6 +87,17 @@ chmod +x deploy_bridge.sh
 
 Le script utilise `PROJECT_ID`, `REGION` et `MATOS_AGENT_URL`, puis affiche la valeur `BRIDGE_URL` à exporter.
 
+## Déploiement agent sans erreur de configuration
+
+Pour éviter le problème `Invalid URL '/products'`, utilisez le script d'agent qui force `BACKEND_URL` sur Cloud Run :
+
+```bash
+cd agent
+chmod +x deploy_agent.sh
+export BACKEND_URL="$MATOS_BACKEND_URL"
+./deploy_agent.sh
+```
+
 ## Technologies utilisées
 
 - **Backend** : FastAPI, Pydantic, SQLite

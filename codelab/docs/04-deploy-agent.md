@@ -6,15 +6,17 @@ Cette étape déploie le service agent sur Cloud Run.
 
 - `matos-agent-service` est déployé,
 - `MATOS_AGENT_URL` est exportée,
+- `BACKEND_URL` est bien présent dans la configuration Cloud Run,
 - l'interface dev UI est accessible.
 
 ## 1. Déployer depuis le bon dossier
 
 ```bash
-cd agent/matos
-source ../venv/bin/activate
+cd agent
+source venv/bin/activate
 export BACKEND_URL="$MATOS_BACKEND_URL"
-adk deploy cloud_run --project "$PROJECT_ID" --region "$REGION" --service_name matos-agent-service --with_ui .
+chmod +x deploy_agent.sh
+./deploy_agent.sh
 ```
 
 ## 2. Enregistrer l'URL du service
@@ -24,7 +26,15 @@ export MATOS_AGENT_URL="$(gcloud run services describe matos-agent-service --reg
 echo "$MATOS_AGENT_URL"
 ```
 
-## 3. Valider le déploiement
+## 3. Vérifier que BACKEND_URL est bien attaché au service
+
+```bash
+gcloud run services describe matos-agent-service \
+	--region "$REGION" \
+	--format='flattened(spec.template.spec.containers[0].env[])' | grep BACKEND_URL
+```
+
+## 4. Valider le déploiement
 
 ```bash
 curl -I "$MATOS_AGENT_URL/dev-ui/"

@@ -51,4 +51,6 @@ Continuez lorsque :
 - le fallback fonctionne,
 - la capture de lead réussit.
 
+Important: au déploiement Cloud Run, `BACKEND_URL` doit être défini explicitement dans le service agent. L'étape 04 utilise `agent/deploy_agent.sh` pour forcer cette configuration et éviter les erreurs de type `Invalid URL '/products'`.
+
 Suite : `04 - Deploy the Agent`

@@ -14,6 +14,13 @@ LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("matos_agent")
 
+
+def validate_backend_url() -> Optional[str]:
+    backend_url = (BACKEND_URL or "").strip()
+    if backend_url.startswith("http://") or backend_url.startswith("https://"):
+        return backend_url.rstrip("/")
+    return None
+
 def search_products(query: Optional[str] = None, category: Optional[str] = None) -> str:
     """Rechercher les produits Matos depuis le backend.
     
@@ -23,13 +30,18 @@ def search_products(query: Optional[str] = None, category: Optional[str] = None)
     - Returns available categories if no match found
     """
     try:
+        backend_url = validate_backend_url()
+        if not backend_url:
+            logger.error("BACKEND_URL is missing or invalid in agent runtime")
+            return "Configuration requise: BACKEND_URL est absent dans le service agent. Veuillez redeployer avec BACKEND_URL correctement défini."
+
         params = {}
         if query:
             params["q"] = query
         if category:
             params["category"] = category
 
-        url = f"{BACKEND_URL}/products"
+        url = f"{backend_url}/products"
         params["available"] = "true"
         response = requests.get(url, params=params, timeout=5)
         response.raise_for_status()
@@ -37,7 +49,7 @@ def search_products(query: Optional[str] = None, category: Optional[str] = None)
 
         if not products and not category:
             try:
-                cat_response = requests.get(f"{BACKEND_URL}/products/categories", timeout=5)
+                cat_response = requests.get(f"{backend_url}/products/categories", timeout=5)
                 cat_response.raise_for_status()
                 categories = cat_response.json().get("categories", [])
                 if categories:
@@ -66,6 +78,11 @@ def search_products(query: Optional[str] = None, category: Optional[str] = None)
 def save_customer_lead(full_name: str, email: str, phone: Optional[str] = None) -> str:
     """Enregistrer un prospect interesse dans le backend."""
     try:
+        backend_url = validate_backend_url()
+        if not backend_url:
+            logger.error("BACKEND_URL is missing or invalid in agent runtime")
+            return "Configuration requise: BACKEND_URL est absent dans le service agent. Veuillez redeployer avec BACKEND_URL correctement défini."
+
         payload = {
             "full_name": full_name.strip(),
             "email": email.strip(),
@@ -73,7 +90,7 @@ def save_customer_lead(full_name: str, email: str, phone: Optional[str] = None) 
         if phone:
             payload["phone"] = phone.strip()
 
-        response = requests.post(f"{BACKEND_URL}/customers", json=payload, timeout=5)
+        response = requests.post(f"{backend_url}/customers", json=payload, timeout=5)
 
         if response.status_code == 201:
             customer = response.json()
