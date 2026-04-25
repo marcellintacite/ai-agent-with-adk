@@ -10,7 +10,7 @@ load_dotenv()
 # TODO: remplacez cette URL par celle de votre backend si besoin, ou définissez BACKEND_URL dans .env / Cloud Run.
 BACKEND_URL = os.getenv("BACKEND_URL", "")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
-MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash-lite")
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-pro")
 
 logging.basicConfig(level=LOG_LEVEL, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("matos_agent")

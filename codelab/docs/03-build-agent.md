@@ -23,7 +23,15 @@ adk --version
 - `agent/matos/root_agent.py` contient la logique principale de l'agent.
 - `agent/matos/__init__.py` exporte `root_agent`.
 
-## 3. Lancer l'agent en local
+## 3. Configurer la clé API (très utile avant d'exécuter l'agent)
+
+Il est fortement recommandé de définir la clé API Gemini avant `adk run .`, sinon l'agent ne pourra pas appeler le modèle.
+
+```bash
+export GOOGLE_API_KEY="votre-cle-gemini"
+```
+
+## 4. Lancer l'agent en local
 
 ```bash
 export BACKEND_URL="$MATOS_BACKEND_URL"
@@ -31,7 +39,7 @@ cd matos
 adk run .
 ```
 
-## 4. Prompts de test rapide
+## 5. Prompts de test rapide
 
 Essayez ces exemples dans le CLI interactif :
 
